@@ -1,0 +1,19 @@
+{
+  "name": "quiettime_coordinator_frontend",
+  "version": "1.0.0",
+  "description": "React frontend for the quiettime coordinator app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PortableStick/quiettime_coordinator_frontend.git"
+  },
+  "author": "Gregory Smith",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PortableStick/quiettime_coordinator_frontend/issues"
+  },
+  "homepage": "https://github.com/PortableStick/quiettime_coordinator_frontend#readme"
+}
