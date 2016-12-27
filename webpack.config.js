@@ -13,10 +13,17 @@ var htmlPlugin = new htmlWebpackPlugin({
 });
 
 var minifyConfig = {
-  // Should use defaults
+  // Use the defaults
+  // Options can be found at https://github.com/kangax/html-minifier#options-quick-reference
 };
 
+// Add the name of package files (as you see them in the package.json manifest) here:
 var vendorFiles = ['react', 'react-dom', 'react-redux', 'redux', 'react-router'];
+
+// Everything that is excluded in vendorFiles must be referenced here
+// The keys are the same package names as you used in vendorFiles
+// The values are the object names you'll find in the external file
+// { [package name]: [name of object in the external file] }
 var externals = {
   'react': 'React',
   'react-dom': 'ReactDOM',
@@ -27,14 +34,7 @@ var externals = {
 
 var entryOptions = isProduction ? './src/index.js' : ['./src/index.js', 'webpack-dev-server/client?http://localhost:8080', 'webpack/hot/only-dev-server']
 
-var outputOptions = isProduction ? {
-  path: path.join(__dirname, 'build'),
-  filename: 'scripts/bundle.js'
-} : {
-  path: path.join(__dirname, 'build'),
-  publicPath: 'http://localhost:8080/',
-  filename: 'scripts/bundle.js'
-};
+var outputOptions = Object.assign({}, { path: path.join(__dirname, 'build'), filename: 'scripts/bundle.js' }, isProduction ? {} : { publicPath: 'http://localhost:8080/' });
 
 module.exports = {
   entry: entryOptions,
