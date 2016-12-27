@@ -3,7 +3,7 @@ require('../scss/greeting.scss');
 
 const Greeting = props => {
   return (
-    <div className="my-div">
+    <div className="my-div1">
       Hello, world!
     </div>
     );

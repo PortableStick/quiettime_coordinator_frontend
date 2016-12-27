@@ -1,10 +1,9 @@
 import React from 'react';
-require('../scss/greeting2.scss');
 
 const Greeting2 = props => {
   return (
-    <div className="my-div">
-      Hello, world!
+    <div className="my-div2">
+      Holy shazzzz!
     </div>
     );
 };

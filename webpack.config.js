@@ -25,7 +25,7 @@ var externals = {
   'react-router': 'ReactRouter'
 };
 
-var entryOptions = isProduction ? './src/app.js' : ['./src/app.js', 'webpack-dev-server/client?http://localhost:8080', 'webpack/hot/only-dev-server']
+var entryOptions = isProduction ? './src/index.js' : ['./src/index.js', 'webpack-dev-server/client?http://localhost:8080', 'webpack/hot/only-dev-server']
 
 var outputOptions = isProduction ? {
   path: path.join(__dirname, 'build'),
@@ -40,6 +40,9 @@ module.exports = {
   entry: entryOptions,
   output: outputOptions,
   devtool: isProduction ? 'cheap-module-source-map' : 'eval',
+  devServer: {
+    historyApiFallback: true
+  },
   module: {
     preLoaders: [
       {

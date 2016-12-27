@@ -1,6 +1,13 @@
-.my-div {
+.my-div1 {
   font-size: 4em;
   color: #333;
-  background-image: url('../images/imageService.jpeg');
+  background-image: url("../images/imageService.jpeg");
   height: 500px;
+}
+
+.my-div2 {
+  font-size: 6em;
+  color: tomato;
+  height: 600px;
+  background-color: turqoise;
 }
