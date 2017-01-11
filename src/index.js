@@ -4,7 +4,8 @@ import RootRouter from './RootRouter';
 import { Provider } from 'react-redux';
 import store from './store/store';
 
-require('./scss/main.scss');
+import '../node_modules/bootstrap/less/bootstrap.less'
+import './scss/main.scss';
 
 window.onload = () => {
   render(

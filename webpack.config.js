@@ -52,9 +52,16 @@ module.exports = {
       }
     ],
     loaders: [
+    {
+      test: /\.less$/,
+      loaders: [
+        'style',
+        'css',
+        'less'
+      ]
+    },
       {
-        test: /\.scss$/,
-        include: /src/,
+        test: /\.s?css$/,
         loaders: [
           'style',
           'css',
@@ -63,7 +70,7 @@ module.exports = {
         ]
       },
       {
-        test: /\.(jpe?g|png|gif|svg)$/i,
+        test: /\.(jpe?g|png|gif|svg|)$/i,
         loaders: [
           'url?limit=8192',
           'img'
@@ -76,6 +83,10 @@ module.exports = {
           'react-hot',
           'babel'
         ]
+      },
+      {
+        test: /\.(eot|ttf|woff|woff2)($|\?)/,
+        loaders: ['file?fonts/[name].[ext]']
       }
     ]
   },
