@@ -3,10 +3,21 @@
   "version": "1.0.0",
   "description": "React frontend for the quiettime coordinator app",
   "main": "index.js",
+  "watch": {
+    "test": {
+      "patterns": [
+        "src",
+        "tests"
+      ],
+      "extensions": "js,jsx",
+      "quiet": true
+    }
+  },
   "scripts": {
-    "test": "tape -r babel-register -r ignore-styles tests/**/*.js | faucet",
+    "test": "tape -r babel-register -r ignore-styles tests/**/*.js | faucet || true",
+    "test-watch": "npm-watch",
     "build": "NODE_ENV=production webpack -p",
-    "webpack-server": "webpack-dev-server -d --inline --hot",
+    "webpack-server": "API_URL=http://localhost:9000 webpack-dev-server -d --inline --hot",
     "web-server": "http-server -p 3000 .",
     "start": "npm run webpack-server & npm run web-server"
   },
@@ -40,6 +51,7 @@
     "img-loader": "^1.3.1",
     "jsdom": "^9.9.1",
     "node-sass": "^4.1.1",
+    "npm-watch": "^0.1.7",
     "postcss-loader": "^1.2.1",
     "react-addons-test-utils": "^15.4.1",
     "react-hot-loader": "^1.3.1",
@@ -50,15 +62,18 @@
     "svgo": "^0.7.1",
     "svgo-loader": "^1.1.2",
     "tape": "^4.6.3",
+    "tape-catch": "^1.0.6",
     "url-loader": "^0.5.7",
     "webpack": "^1.14.0",
     "webpack-dev-server": "^1.16.2"
   },
   "dependencies": {
+    "isomorphic-fetch": "^2.2.1",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
     "react-redux": "^5.0.1",
     "react-router": "^3.0.0",
-    "redux": "^3.6.0"
+    "redux": "^3.6.0",
+    "redux-thunk": "^2.1.0"
   }
 }

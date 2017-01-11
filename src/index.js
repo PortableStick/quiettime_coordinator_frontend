@@ -1,20 +1,15 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Router, Route, browserHistory } from 'react-router';
+import RootRouter from './RootRouter';
 import { Provider } from 'react-redux';
-import Greeting from './components/Greeting';
-import Greeting2 from './components/Greeting2';
-import App from './components/App';
+import store from './store/store';
 
 require('./scss/main.scss');
 
 window.onload = () => {
   render(
-    <Router history={browserHistory}>
-      <Route path="/" component={App}>
-        <Route path="one" component={Greeting} />
-        <Route path="two" component={Greeting2} />
-      </Route>
-    </Router>
+    <Provider store={store}>
+      <RootRouter />
+    </Provider>
     , document.getElementById('app'));
 };
