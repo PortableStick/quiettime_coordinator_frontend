@@ -1,0 +1,11 @@
+.result-img {
+  max-width: 100px;
+}
+
+button.btn.btn-success.attending-btn:hover {
+  background-color: red;
+}
+
+button.btn.btn-success.attending-btn:hover::before {
+  content: "Stop ";
+}

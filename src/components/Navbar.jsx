@@ -1,17 +1,22 @@
-import React from 'react';
-import { Link } from 'react-router';
+import React from 'react'
+import { Link } from 'react-router'
+
+import '../scss/navbar.scss'
 
 export default props => {
-  const { userName } = props.user;
+  const { userName } = props.user
+  const userLink = props.user.loggedIn ? <li><Link to="/me">{userName}</Link></li> : <li><Link to="/login">Login</Link></li>
+  const signupLink = props.user.loggedIn ? null : <li><Link to="/signup">Sign Up</Link></li>
   return (
-    <nav>
-      QuietTime Coordinator
-      <span>{userName}</span>
-      <ul>
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/me">User</Link></li>
+    <nav className="navbar navbar-default">
+      <div className="navbar-header">
+        <Link to="/" className="navbar-brand">QuietTime Coordinator</Link>
+      </div>
+      <ul className="nav navbar-nav navbar-right">
         <li><Link to="/search">Search</Link></li>
+        {userLink}
+        {signupLink}
       </ul>
     </nav>
-  );
+  )
 }

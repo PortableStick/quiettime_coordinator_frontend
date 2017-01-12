@@ -1,4 +1,4 @@
-import fetch from 'isomorphic-fetch';
+import fetch from 'isomorphic-fetch'
 import { passwordResetSent,
         newPasswordSent,
         newUserConfirmationSent,
@@ -13,9 +13,9 @@ import { passwordResetSent,
         requestReceivedByServer,
         receivedUserDataAfterRequest,
         reportServerError,
-        receiveSearchResults } from '../actions/actions';
+        receiveSearchResults } from '../actions/actions'
 
-const API_URL = "http://localhost:3000";
+const API_URL = "http://localhost:3000"
 const methods = {
   GET: 'GET',
   POST: 'POST',
@@ -24,105 +24,105 @@ const methods = {
 }
 
 export const dataService = store => next => action => {
-  let headers = new Headers();
+  let headers = new Headers()
   let fetchParams = {
     method: methods.GET,
     headers: headers
-  };
-  next(action);
+  }
+  next(action)
   switch(action.type) {
     case "REQUEST_PASSWORD_RESET":
-      store.dispatch(passwordResetSent());
+      store.dispatch(passwordResetSent())
       fetch(`${API_URL}/password_resets`, fetchParams.merge({ method: methods.POST }))
         .then(response => store.dispatch(requestReceivedByServer()))
-        .catch(error => store.dispatch(reportServerError(error)));
-      break;
+        .catch(error => store.dispatch(reportServerError(error)))
+      break
     case "SEND_RESET_PASSWORD":
-      store.dispatch(newPasswordSent());
+      store.dispatch(newPasswordSent())
       fetch(`${API_URL}/password_resets`, fetchParams.merge({ method: methods.PATCH }))
         .then(response => response.json())
         .then(userData => {
-          store.dispatch(resetSentPassword());
+          store.dispatch(resetSentPassword())
           return store.dispatch(receivedUserDataAfterRequest(userData))
         })
-        .catch(error => store.dispatch(reportServerError(error)));
-      break;
+        .catch(error => store.dispatch(reportServerError(error)))
+      break
     case "SEND_USER_CONFIRMATION":
-      store.dispatch(newUserConfirmationSent());
+      store.dispatch(newUserConfirmationSent())
       fetch(`${API_URL}/api/v1/user_confirmation`, fetchParams.merge({ method: methods.POST }))
         .then(response => store.dispatch(requestReceivedByServer()))
-        .catch(error => store.dispatch(reportServerError(error)));
-      break;
+        .catch(error => store.dispatch(reportServerError(error)))
+      break
     case "CONFIRM_USER":
-      store.dispatch(userConfirmed());
+      store.dispatch(userConfirmed())
       fetch(`${API_URL}/api/v1/user_confirmation/${action.payload.userid}`, fetchParams.merge({ method: methods.PATCH }))
         .then(response => store.dispatch(requestReceivedByServer()))
-        .catch(error => store.dispatch(reportServerError(error)));
-      break;
+        .catch(error => store.dispatch(reportServerError(error)))
+      break
     case "LOGIN":
-      store.dispatch(loginSent());
+      store.dispatch(loginSent())
       fetch(`${API_URL}/api/v1/tokens`, fetchParams.merge({ method: methods.POST }))
         .then(response => response.json())
         .then(userData => {
-          store.dispatch(resetLoginSent());
+          store.dispatch(resetLoginSent())
           return store.dispatch(receivedUserDataAfterRequest(userData))
         })
-        .catch(error => store.dispatch(reportServerError(error)));
-      break;
+        .catch(error => store.dispatch(reportServerError(error)))
+      break
     case "SIGNUP":
-      store.dispatch(signupSent());
+      store.dispatch(signupSent())
       fetch(`${API_URL}/api/v1/users`, fetchParams.merge({ method: methods.POST }))
         .then(response => response.json())
         .then(userData => {
-          store.dispatch(resetSignupSent());
+          store.dispatch(resetSignupSent())
           return store.dispatch(receivedUserDataAfterRequest(userData))
         })
-        .catch(error => store.dispatch(reportServerError(error)));
-      break;
+        .catch(error => store.dispatch(reportServerError(error)))
+      break
     case "UPDATE_USER_PROFILE":
-      store.dispatch(userUpdateSent());
+      store.dispatch(userUpdateSent())
       fetch(`${API_URL}/api/v1/users/${action.payload.userid}`, fetchParams.merge({ method: methods.PATCH }))
         .then(response => response.json())
         .then(userData => {
-          store.dispatch(resetUserUpdateSent());
+          store.dispatch(resetUserUpdateSent())
           return store.dispatch(receivedUserDataAfterRequest(userData))
         })
-        .catch(error => store.dispatch(reportServerError(error)));
-      break;
+        .catch(error => store.dispatch(reportServerError(error)))
+      break
     case "DELETE_USER":
-      store.dispatch(userDeletionSent());
+      store.dispatch(userDeletionSent())
       fetch(`${API_URL}/api/v1/users/${action.payload.userid}`, fetchParams.merge({ method: methods.DELETE }))
         .then(response => store.dispatch(requestReceivedByServer()))
-        .catch(error => store.dispatch(reportServerError(error)));
-      break;
+        .catch(error => store.dispatch(reportServerError(error)))
+      break
     case "SEND_SEARCH_DATA":
-      store.dispatch(searchDataSent());
+      store.dispatch(searchDataSent())
       fetch('/api/v1/searches', fetchParams.merge({ method: methods.POST }))
         .then(response => response.json())
         .then(results => store.dispatch(receiveSearchResults(results)))
-        .catch(error => store.dispatch(reportServerError(error)));
-      break;
+        .catch(error => store.dispatch(reportServerError(error)))
+      break
     case "ADD_LOCATION_TO_USER":
-      store.dispatch(addLocationSent());
+      store.dispatch(addLocationSent())
       fetch(`${API_URL}/api/v1/plans`, fetchParams.merge({ method: methods.POST }))
         .then(response => response.json())
         .then(userData => {
-          store.dispatch(resetAddLocationSent());
+          store.dispatch(resetAddLocationSent())
           return store.dispatch(receivedUserDataAfterRequest(userData))
         })
-        .catch(error => store.dispatch(reportServerError(error)));
-      break;
+        .catch(error => store.dispatch(reportServerError(error)))
+      break
     case "REMOVE_LOCATION_FROM_USER":
-      store.dispatch(removeLocationSent());
+      store.dispatch(removeLocationSent())
       fetch(`${API_URL}/api/v1/plans${action.payload.location}`, fetchParams.merge({ method: methods.DELETE }))
         .then(response => response.json())
         .then(userData => {
-          store.dispatch(resetRemoveLocationSent());
+          store.dispatch(resetRemoveLocationSent())
           return store.dispatch(receivedUserDataAfterRequest(userData))
         })
-        .catch(error => store.dispatch(reportServerError(error)));
-      break;
+        .catch(error => store.dispatch(reportServerError(error)))
+      break
     default:
-     break;
+     break
   }
 }

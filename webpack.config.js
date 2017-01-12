@@ -1,7 +1,7 @@
-var webpack = require('webpack');
-var path = require('path');
-var htmlWebpackPlugin = require('html-webpack-plugin');
-var isProduction = process.env.NODE_ENV === "production";
+var webpack = require('webpack')
+var path = require('path')
+var htmlWebpackPlugin = require('html-webpack-plugin')
+var isProduction = process.env.NODE_ENV === "production"
 var htmlPlugin = new htmlWebpackPlugin({
   title: "QuietTime Coordinator",
   filename: "index.html",
@@ -10,15 +10,15 @@ var htmlPlugin = new htmlWebpackPlugin({
   isProduction: isProduction,
   minify: minifyConfig,
   hash: isProduction
-});
+})
 
 var minifyConfig = {
   // Use the defaults
   // Options can be found at https://github.com/kangax/html-minifier#options-quick-reference
-};
+}
 
 // Add the name of package files (as you see them in the package.json manifest) here:
-var vendorFiles = ['react', 'react-dom', 'react-redux', 'redux', 'react-router'];
+var vendorFiles = ['react', 'react-dom', 'react-redux', 'redux', 'react-router']
 
 // Everything that is excluded in vendorFiles must be referenced here
 // The keys are the same package names as you used in vendorFiles
@@ -30,11 +30,11 @@ var externals = {
   'react-redux': 'ReactRedux',
   'redux': 'Redux',
   'react-router': 'ReactRouter'
-};
+}
 
 var entryOptions = isProduction ? './src/index.js' : ['./src/index.js', 'webpack-dev-server/client?http://localhost:8080', 'webpack/hot/only-dev-server']
 
-var outputOptions = Object.assign({}, { path: path.join(__dirname, 'build'), filename: 'scripts/bundle.js' }, isProduction ? {} : { publicPath: 'http://localhost:8080/' });
+var outputOptions = Object.assign({}, { path: path.join(__dirname, 'build'), filename: 'scripts/bundle.js' }, isProduction ? {} : { publicPath: 'http://localhost:8080/' })
 
 module.exports = {
   entry: entryOptions,
@@ -94,4 +94,4 @@ module.exports = {
   plugins: [
     htmlPlugin
   ]
-};
+}
