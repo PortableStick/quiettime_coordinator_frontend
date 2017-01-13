@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
+import { browserHistory } from 'react-router'
 import UserForm from '../components/UserForm.jsx'
 import UserPlans from '../components/UserPlans.jsx'
 import UserDisplay from '../components/UserDisplay.jsx'
@@ -36,6 +37,12 @@ class User extends Component {
 
     cancelPassword() {
       store.dispatch(actions.turnOffPasswordEditMode())
+    }
+
+    componentWillMount() {
+      if(!this.props.user.loggedIn) {
+        browserHistory.push('/login')
+      }
     }
 
     render() {

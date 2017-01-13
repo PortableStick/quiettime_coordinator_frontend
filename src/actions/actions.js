@@ -26,6 +26,7 @@ export const turnOffEditMode = () => ({ type: "TURN_OFF_EDIT_MODE" })
 export const turnOnPasswordEditMode = () => ({ type: "TURN_ON_PASSWORD_EDIT_MODE" })
 export const turnOffPasswordEditMode = () => ({ type: "TURN_OFF_PASSWORD_EDIT_MODE" })
 export const enableGeolocation = () => ({ type: "ENABLE_GEOLOCATION" })
+export const setCoordinates = coordinates => ({ type: "SET_COORDINATES", payload: coordinates })
 /****************************
 *   Middleware Invocations  *
 ****************************/
