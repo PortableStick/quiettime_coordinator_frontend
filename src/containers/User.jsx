@@ -39,7 +39,9 @@ class User extends Component {
     }
 
     render() {
-
+      if(this.props.ui.error) {
+        console.error(this.props.ui.error)
+      }
       return(
         <div>
           <h1>User Info</h1>

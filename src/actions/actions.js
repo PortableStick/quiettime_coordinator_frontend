@@ -1,8 +1,9 @@
+import { browserHistory } from 'react-router'
 /****************************
 *     UI Changes            *
 ****************************/
 
-export const passwordResetSent = () => ({ type: "PASSWORD_RESET_SENT"})
+export const passwordResetSent = () => ({ type: "PASSWORD_RESET_SENT" })
 export const newPasswordSent = () => ({ type: "NEW_PASSWORD_SENT" })
 export const newUserConfirmationSent = () => ({ type: "USER_CONFIRMATION_REQUESTED" })
 export const userConfirmed = () => ({ type: "USER_CONFIRMED" })
@@ -22,9 +23,9 @@ export const resetAddLocationSent = () => ({ type: "RESET_ADD_LOCATION_SENT" })
 export const resetRemoveLocationSent = () => ({ type: "RESET_REMOVE_LOCATION_SENT" })
 export const turnOnEditMode = () => ({ type: "TURN_ON_EDIT_MODE" })
 export const turnOffEditMode = () => ({ type: "TURN_OFF_EDIT_MODE" })
-export const turnOnPasswordEditMode = () => ({ type: "TURN_ON_PASSWORD_EDIT_MODE"})
-export const turnOffPasswordEditMode = () => ({ type: "TURN_OFF_PASSWORD_EDIT_MODE"})
-
+export const turnOnPasswordEditMode = () => ({ type: "TURN_ON_PASSWORD_EDIT_MODE" })
+export const turnOffPasswordEditMode = () => ({ type: "TURN_OFF_PASSWORD_EDIT_MODE" })
+export const enableGeolocation = () => ({ type: "ENABLE_GEOLOCATION" })
 /****************************
 *   Middleware Invocations  *
 ****************************/
@@ -37,14 +38,18 @@ export const signup = () => ({ type: "SIGNUP"})
 export const updateUserProfile = data => ({ type: "UPDATE_USER_PROFILE", payload: data})
 export const deleteUser = data => ({ type: "DELETE_USER", payload: data})
 export const sendSearchData = searchParameters => ({ type: "SEND_SEARCH_DATA", payload: searchParameters})
-export const addLocationToUser = data => ({ type: "ADD_LOCATION_TO_USER", payload: data})
-export const removeLocationFromUser = data => ({ type: "REMOVE_LOCATION_FROM_USER", payload: data})
+export const addLocationToUser = data => ({ type: "ADD_LOCATION_TO_USER", payload: data })
+export const removeLocationFromUser = data => ({ type: "REMOVE_LOCATION_FROM_USER", payload: data })
 
 /****************************
 *  Middleware Responses     *
 ****************************/
 
-export const receivedUserDataAfterRequest = userData => ({ type: "RECEIVE_USER_DATA", payload: userData})
+export const receivedUserDataAfterRequest = userData => {
+  console.log("Data received")
+  browserHistory.push('/')
+  return { type: "RECEIVE_USER_DATA", payload: userData}
+}
 export const reportServerError = error => ({ type: "REPORT_SERVER_ERROR", payload: error})
 export const receiveSearchResults = results => ({ type: "RECEIVE_SEARCH_RESULTS", payload: results})
 export const requestPasswordReset = () => ({ type: "REQUEST_PASSWORD_RESET"})

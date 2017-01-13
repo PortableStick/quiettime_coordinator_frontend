@@ -5,17 +5,18 @@ import { dataService } from '../middleware/dataServiceMiddleware'
 
 // get user data from browser storage
 const userDataFromBrowserStorage = {
-  userName: "BillBob",
-  email: "a@b.com",
-  plans: ["1", "2", "3"],
-  loggedIn: true
+  userName: null,
+  email: null,
+  plans: [],
+  loggedIn: false
 }
 
 const initialData = {
   user: {
     userName: null,
     email: null,
-    plans: []
+    plans: [],
+    loggedIn: false
   }
 }
 

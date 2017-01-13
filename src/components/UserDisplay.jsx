@@ -5,7 +5,7 @@ export default props => {
     <form >
       <div className="form-group">
         <label htmlFor="user-name">Username: </label>
-        <span>{props.user.userName}</span>
+        <span>{props.user.username}</span>
       </div>
       <div className="form-group">
         <label htmlFor="user-email">Email: </label>
