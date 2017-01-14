@@ -10,7 +10,8 @@ const userDataFromBrowserStorage = {
   plans: [],
   loggedIn: false,
   coordinates: null,
-  token: null
+  token: null,
+  id: null
 }
 try {
   const keys = Object.keys(userDataFromBrowserStorage)
@@ -32,10 +33,11 @@ const initialData = {
     plans: [],
     loggedIn: false,
     coordinates: null,
-    token: null
+    token: null,
+    id: null
   }
 }
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-const middleware = composeEnhancers(applyMiddleware(dataService, userStorage, reduxThunk))
+const middleware = composeEnhancers(applyMiddleware(userStorage, dataService, reduxThunk))
 
 export default createStore(rootReducer, {...initialData, user: userDataFromBrowserStorage}, middleware)

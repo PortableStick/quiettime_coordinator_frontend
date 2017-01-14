@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import SearchBar from '../components/SearchBar.jsx'
 import SearchResult from '../components/SearchResult.jsx'
-import { sendSearchData, enableGeolocation, setCoordinates, persistUserCoordinates } from '../actions/actions'
+import { sendAuthenticatedSearchData, sendUnauthenticatedSearchData, enableGeolocation, setCoordinates, persistUserCoordinates } from '../actions/actions'
 import store from '../store/store'
 
 class Search extends Component {
@@ -38,18 +38,22 @@ class Search extends Component {
       if(this.props.ui.searchDataSent) {
         return
       }
-        navigator.geolocation.getCurrentPosition(data => {
-          const coordinates = JSON.stringify({
-            search: {
-              latitude: data.coords.latitude,
-              longitude: data.coords.longitude
-            }
-          })
-          store.dispatch(setCoordinates(coordinates))
-          store.dispatch(persistUserCoordinates(coordinates))
-          store.dispatch(enableGeolocation())
-          store.dispatch(sendSearchData(coordinates))
+      navigator.geolocation.getCurrentPosition(data => {
+        const coordinates = JSON.stringify({
+          search: {
+            latitude: data.coords.latitude,
+            longitude: data.coords.longitude
+          }
         })
+        store.dispatch(setCoordinates(coordinates))
+        store.dispatch(persistUserCoordinates(coordinates))
+        store.dispatch(enableGeolocation())
+        if(this.props.user.loggedIn) {
+          store.dispatch(sendAuthenticatedSearchData(coordinates))
+        } else {
+          store.dispatch(sendUnauthenticatedSearchData(coordinates))
+        }
+      })
     }
 
     componentWillReceiveProps(newProps) {

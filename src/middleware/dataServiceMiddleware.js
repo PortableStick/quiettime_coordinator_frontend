@@ -21,7 +21,8 @@ import { passwordResetSent,
         confirmRemoveLocation,
         resetSignupSent,
         persistUserData,
-        resetSearchDataSent } from '../actions/actions'
+        resetSearchDataSent,
+        resetUserUpdateSent } from '../actions/actions'
 
 const API_URL = "http://localhost:3000"
 const methods = {
@@ -73,13 +74,7 @@ export const dataService = store => next => action => {
     case "LOGIN":
       store.dispatch(loginSent())
       fetch(`${API_URL}/api/v1/tokens`, {...fetchParams, method: methods.POST, body: action.payload })
-        .then(response => {
-          if(response.ok) {
-            return response.json()
-          } else {
-            throw {status: response.status, message: response.statusText}
-          }
-        })
+        .then(handleResponse)
         .then(userData => {
           store.dispatch(resetLoginSent())
           store.dispatch(persistUserData(userData))
@@ -89,13 +84,7 @@ export const dataService = store => next => action => {
     case "SIGNUP":
       store.dispatch(signupSent())
       fetch(`${API_URL}/api/v1/users`, {...fetchParams, method: methods.POST, body: action.payload })
-        .then(response => {
-          if(response.ok) {
-            return response.json()
-          } else {
-            throw {status: response.status, message: response.statusText}
-          }
-        })
+        .then(handleResponse)
         .then(userData => {
           store.dispatch(resetSignupSent())
           store.dispatch(persistUserData(userData))
@@ -104,35 +93,40 @@ export const dataService = store => next => action => {
         .catch(error => store.dispatch(reportServerError(error)))
       break
     case "UPDATE_USER_PROFILE":
+      headers.set("authorization", user.token)
       store.dispatch(userUpdateSent())
-      fetch(`${API_URL}/api/v1/users/${action.payload.userid}`, {...fetchParams, method: methods.PATCH })
-        .then(response => response.json())
+      fetch(`${API_URL}/api/v1/users/${action.payload.id}`, {...fetchParams, method: methods.PATCH, body: action.payload.updatedInfo, headers: headers })
+        .then(handleResponse)
         .then(userData => {
           store.dispatch(resetUserUpdateSent())
-          store.dispatch(persistUserData())
+          store.dispatch(persistUserData(userData))
           return store.dispatch(receivedUserDataAfterRequest(userData))
-        })
+        }, error => store.dispatch(reportServerError(error)))
         .catch(error => store.dispatch(reportServerError(error)))
       break
     case "DELETE_USER":
       store.dispatch(userDeletionSent())
-      fetch(`${API_URL}/api/v1/users/${action.payload.userid}`, {...fetchParams, method: methods.DELETE })
+      fetch(`${API_URL}/api/v1/users/${action.payload.id}`, {...fetchParams, method: methods.DELETE })
         .then(response => store.dispatch(requestReceivedByServer()))
         .catch(error => store.dispatch(reportServerError(error)))
       break
-    case "SEND_SEARCH_DATA":
+    case "SEND_UNAUTHETNICATED_SEARCH_DATA":
+      store.dispatch(searchDataSent())
+      fetch(`${API_URL}/api/v1/searches`, {...fetchParams, method: methods.POST, body: action.payload})
+        .then(handleResponse)
+        .then(results => {
+          store.dispatch(resetSearchDataSent())
+          return store.dispatch(receiveSearchResults(results))
+        }, error => store.dispatch(reportServerError(error)))
+        .catch(error => store.dispatch(reportServerError(error)))
+      break
+    case "SEND_AUTHENTICATED_SEARCH_DATA":
       store.dispatch(searchDataSent())
       if(user.loggedIn) {
         headers.set("authorization", user.token)
       }
       fetch(`${API_URL}/api/v1/searches`, {...fetchParams, method: methods.POST, body: action.payload, headers: headers})
-        .then(response => {
-          if(response.ok) {
-            return response.json()
-          } else {
-            throw {status: response.status, message: response.statusText}
-          }
-        })
+        .then(handleResponse)
         .then(results => {
           store.dispatch(resetSearchDataSent())
           return store.dispatch(receiveSearchResults(results))
@@ -143,13 +137,7 @@ export const dataService = store => next => action => {
       store.dispatch(addLocationSent())
       headers.set("authorization", user.token)
       fetch(`${API_URL}/api/v1/plans`, {...fetchParams, method: methods.POST, headers: headers, body: action.payload })
-        .then(response => {
-          if(response.ok) {
-            return response.json()
-          } else {
-            throw {status: response.status, message: response.statusText}
-          }
-        })
+        .then(handleResponse)
         .then(userData => {
           store.dispatch(resetAddLocationSent())
           return store.dispatch(confirmAddLocation())
@@ -160,13 +148,7 @@ export const dataService = store => next => action => {
       store.dispatch(removeLocationSent())
       headers.set("authorization", user.token)
       fetch(`${API_URL}/api/v1/plans${action.payload.location}`, {...fetchParams, method: methods.DELETE, headers: headers })
-        .then(response => {
-          if(response.ok) {
-            return response.json()
-          } else {
-            throw {status: response.status, message: response.statusText}
-          }
-        })
+        .then(handleResponse)
         .then(userData => {
           store.dispatch(resetAddLocationSent())
           return store.dispatch(confirmRemoveLocation())
@@ -175,5 +157,13 @@ export const dataService = store => next => action => {
       break
     default:
      break
+  }
+}
+
+function handleResponse(response){
+  if(response.ok) {
+    return response.json()
+  } else {
+    throw {status: response.status, message: response.statusText}
   }
 }

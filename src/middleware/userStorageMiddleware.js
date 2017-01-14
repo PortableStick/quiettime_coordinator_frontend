@@ -6,12 +6,13 @@ export const userStorage = store => next => action => {
   switch(action.type) {
     case "PERSIST_USER_DATA":
       try {
-        const { username, email, token, plans, loggedIn, coordinates } = action.payload.user
+        const { username, email, token, plans, loggedIn, coordinates, id } = action.payload.user
         localStorage.setItem('username', username)
         localStorage.setItem('email', email)
         localStorage.setItem('token', token)
         localStorage.setItem('plans', plans.join('*'))
         localStorage.setItem('loggedIn', "true")
+        localStorage.setItem('id', id)
       } catch(error) {
         store.dispatch(reportLocalStorageError(error))
       }

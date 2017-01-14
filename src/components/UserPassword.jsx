@@ -1,13 +1,13 @@
 import React from 'react'
 
 export default props => {
-  const { passwordEditMode, stopEdit, enableEdit, cancelEdit } = props
+  const { passwordEditMode, stopEdit, enableEdit, cancelEdit, updatePassword, updatePasswordConfirmation } = props
   const passwordForm = <div>
     <form className="form-inline">
       <label htmlFor="password-change">New Password</label>
-      <input type="password" className="form-control" id="password-change" placeholder="new password"/>
+      <input type="password" className="form-control" id="password-change" placeholder="new password" onChange={updatePassword} />
       <label htmlFor="password-change-confirmation">Confirm New Password</label>
-      <input type="password" className="form-control" id="password-change-confirmation"/>
+      <input type="password" className="form-control" id="password-change-confirmation" onChange={updatePasswordConfirmation} />
     </form>
     <form className="form-inline">
       <button type="button" className="btn btn-success" onClick={stopEdit}>Save</button>

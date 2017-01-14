@@ -4,9 +4,10 @@ const initialUserData = {
   username: null,
   email: null,
   plans: [],
-  token: null,
   loggedIn: false,
-  coordinates: null
+  coordinates: null,
+  token: null,
+  id: null
 }
 
 const initialSearchData = {
@@ -37,7 +38,7 @@ function userReducer(state=initialUserData, action) {
     case "RECEIVE_USER_DATA":
       return {...state, ...action.payload.user, loggedIn: true}
     case "LOGOUT":
-      return initialUserData
+      return {...initialUserData}
     case "SET_COORDINATES":
       return {...state, coordinates: action.payload}
     default:

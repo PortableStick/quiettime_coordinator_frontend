@@ -44,12 +44,12 @@ class Login extends Component {
                           :
                           <div className="error">{"" && this.props.ui.error.message}</div>
 
-    if(this.props.ui.error) {
-      console.error(this.props.ui.error)
-    }
-    if(this.props.ui.localStorageError) {
-      console.error("There was an error persisiting user data", this.props.ui.localStorageError)
-    }
+    // if(this.props.ui.error) {
+    //   console.error(this.props.ui.error)
+    // }
+    // if(this.props.ui.localStorageError) {
+    //   console.error("There was an error persisiting user data", this.props.ui.localStorageError)
+    // }
     return(
       <section className="container">
         <form>
