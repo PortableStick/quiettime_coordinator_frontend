@@ -28,13 +28,14 @@ const initialUIData = {
    editMode: false,
    passwordEditMode: false,
    isUsingGeolocation: false,
-   error: null
+   error: null,
+   localStorageError: null
  }
 
 function userReducer(state=initialUserData, action) {
   switch (action.type) {
     case "RECEIVE_USER_DATA":
-      return {...state, ...action.payload.user, token: action.payload.jwt, loggedIn: true}
+      return {...state, ...action.payload.user, loggedIn: true}
     case "LOGOUT":
       return initialUserData
     case "SET_COORDINATES":
@@ -48,6 +49,9 @@ function searchesReducer(state=initialSearchData, action) {
   switch (action.type) {
     case "RECEIVE_SEARCH_RESULTS":
       return action.payload || []
+    case "RECEIVE_USER_DATA":
+      const updatedResults = state.results.map(result => ({...result, user_going: action.payload.user.plans.indexOf(result.id) > -1}))
+      return {...state, results: updatedResults}
     default:
       return state
   }
@@ -57,6 +61,8 @@ function uiReducer(state=initialUIData, action) {
   switch (action.type) {
     case "REPORT_SERVER_ERROR":
       return { ...state, error: action.payload }
+    case "LOCAL_STORAGE_ERROR":
+      return { ...state, localStorageError: action.payload }
     case "PASSWORD_RESET_SENT":
       return { ...state, passwordResetRequestSent: true }
     case "NEW_PASSWORD_SENT":
@@ -83,6 +89,8 @@ function uiReducer(state=initialUIData, action) {
       return { ...state, userDeletionSent: true }
     case "SEARCH_DATA_SENT":
       return { ...state, searchDataSent: true }
+    case "RESET_SEARCH_DATA_SENT":
+      return { ...state, searchDataSent: false }
     case "ADD_LOCATION_SENT":
       return { ...state, addLocationSent: true }
     case "RESET_ADD_LOCATION_SENT":

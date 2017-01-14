@@ -9,10 +9,14 @@ export const newUserConfirmationSent = () => ({ type: "USER_CONFIRMATION_REQUEST
 export const userConfirmed = () => ({ type: "USER_CONFIRMED" })
 export const loginSent = () => ({ type: "LOGIN_SENT" })
 export const signupSent = () => ({ type: "SIGNUP_SENT" })
-export const logout = () => ({ type: "LOGOUT" })
+export const logout = () => {
+  browserHistory.push('/')
+  return {type: "LOGOUT"}
+}
 export const userUpdateSent = () => ({ type: "USER_UPDATE_SENT" })
 export const userDeletionSent = () => ({ type: "USER_DELETION_SENT" })
 export const searchDataSent = () => ({ type: "SEARCH_DATA_SENT" })
+export const resetSearchDataSent = () => ({ type: "RESET_SEARCH_DATA_SENT" })
 export const addLocationSent = () => ({ type: "ADD_LOCATION_SENT" })
 export const removeLocationSent = () => ({ type: "REMOVE_LOCATION_SENT" })
 export const requestReceivedByServer = () => ({ type: "REQUEST_RECEIVED_BY_SERVER" })
@@ -29,6 +33,12 @@ export const turnOffPasswordEditMode = () => ({ type: "TURN_OFF_PASSWORD_EDIT_MO
 export const enableGeolocation = () => ({ type: "ENABLE_GEOLOCATION" })
 export const setCoordinates = coordinates => ({ type: "SET_COORDINATES", payload: coordinates })
 export const confirmAddLocation = () => ({ type: "CONFIRM_ADD_LOCATION" })
+export const confirmRemoveLocation = () => ({ type: "CONFIRM_REMOVE_LOCATION" })
+export const persistUserData = userData => ({ type: "PERSIST_USER_DATA", payload: userData })
+export const persistUserLoggedin = loggedIn => ({ type: "PERSIST_USER_LOGGEDIN", payload: loggedIn })
+export const persistUserCoordinates = coordinates => ({ type: "PERSIST_USER_COORDINATES", payload: coordinates })
+export const clearUserData = () => ({ type: "CLEAR_USER_DATA" })
+export const reportLocalStorageError = error => ({ type: "LOCAL_STORAGE_ERROR", payload: error })
 /****************************
 *   Middleware Invocations  *
 ****************************/

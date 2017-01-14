@@ -47,16 +47,19 @@ class Login extends Component {
     if(this.props.ui.error) {
       console.error(this.props.ui.error)
     }
+    if(this.props.ui.localStorageError) {
+      console.error("There was an error persisiting user data", this.props.ui.localStorageError)
+    }
     return(
       <section className="container">
         <form>
           <div className="form-group">
             <label htmlFor="login-username">Username or email: </label>
-            <input type="text" className={`form-control ${errorClass}`} id="login-username" ref={input => this.userName = input}/>
+            <input type="text" className={`form-control ${errorClass}`} id="login-username" ref={input => this.userName = input} onChange={this.updateSearchinfo.bind(this)}/>
           </div>
           <div className="form-group">
             <label htmlFor="login-password">Password</label>
-            <input type="password" className={`form-control ${errorClass}`} id="login-password" ref={input => this.password = input}/>
+            <input type="password" className={`form-control ${errorClass}`} id="login-password" ref={input => this.password = input} onChange={this.updatePassword.bind(this)}/>
           </div>
           <button type="submit" className="btn btn-success btn-lg" onClick={this.sendLogin.bind(this)}>Log In</button>
           <Link to="/" className="btn btn-danger btn-lg">Cancel</Link>

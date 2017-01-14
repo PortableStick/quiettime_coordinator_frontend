@@ -13,7 +13,7 @@ class AttendingButton extends Component {
       }
     })
     this.state = {
-      userGoing: props.user_going,
+      userGoing: props.userGoing,
       attending: props.attending,
       locationData: locationObj
     }

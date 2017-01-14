@@ -15,6 +15,11 @@ class User extends Component {
       super(props)
     }
 
+    logout() {
+      store.dispatch(actions.clearUserData())
+      store.dispatch(actions.logout())
+    }
+
     saveInfo() {
       store.dispatch(actions.turnOffEditMode())
     }
@@ -57,6 +62,7 @@ class User extends Component {
           <UserPassword passwordEditMode={this.props.ui.passwordEditMode} enableEdit={this.editPassword} stopEdit={this.savePassword} cancelEdit={this.cancelPassword} />
           { this.props.ui.userConfirmed ? null : <button className="btn btn-warning">Send new confirmation</button>}
           <UserPlans user={this.props.user} />
+          <button type="button" className="btn btn-danger" onClick={this.logout.bind(this)}>Logout</button>
         </section>
       )
     }

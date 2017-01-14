@@ -18,7 +18,10 @@ import { passwordResetSent,
         resetAddLocationSent,
         resetRemoveLocationSent,
         confirmAddLocation,
-        resetSignupSent } from '../actions/actions'
+        confirmRemoveLocation,
+        resetSignupSent,
+        persistUserData,
+        resetSearchDataSent } from '../actions/actions'
 
 const API_URL = "http://localhost:3000"
 const methods = {
@@ -79,6 +82,7 @@ export const dataService = store => next => action => {
         })
         .then(userData => {
           store.dispatch(resetLoginSent())
+          store.dispatch(persistUserData(userData))
           return store.dispatch(receivedUserDataAfterRequest(userData))
         }, error => store.dispatch(reportServerError(error)))
       break
@@ -94,6 +98,7 @@ export const dataService = store => next => action => {
         })
         .then(userData => {
           store.dispatch(resetSignupSent())
+          store.dispatch(persistUserData(userData))
           return store.dispatch(receivedUserDataAfterRequest(userData))
         }, error => store.dispatch(reportServerError(error)))
         .catch(error => store.dispatch(reportServerError(error)))
@@ -104,6 +109,7 @@ export const dataService = store => next => action => {
         .then(response => response.json())
         .then(userData => {
           store.dispatch(resetUserUpdateSent())
+          store.dispatch(persistUserData())
           return store.dispatch(receivedUserDataAfterRequest(userData))
         })
         .catch(error => store.dispatch(reportServerError(error)))
@@ -120,8 +126,17 @@ export const dataService = store => next => action => {
         headers.set("authorization", user.token)
       }
       fetch(`${API_URL}/api/v1/searches`, {...fetchParams, method: methods.POST, body: action.payload, headers: headers})
-        .then(response => response.json())
-        .then(results => store.dispatch(receiveSearchResults(results)))
+        .then(response => {
+          if(response.ok) {
+            return response.json()
+          } else {
+            throw {status: response.status, message: response.statusText}
+          }
+        })
+        .then(results => {
+          store.dispatch(resetSearchDataSent())
+          return store.dispatch(receiveSearchResults(results))
+        }, error => store.dispatch(reportServerError(error)))
         .catch(error => store.dispatch(reportServerError(error)))
       break
     case "ADD_LOCATION_TO_USER":
@@ -154,7 +169,7 @@ export const dataService = store => next => action => {
         })
         .then(userData => {
           store.dispatch(resetAddLocationSent())
-          return store.dispatch(confirmAddLocation())
+          return store.dispatch(confirmRemoveLocation())
         }, error => store.dispatch(reportServerError(error)))
         .catch(error => store.dispatch(reportServerError(error)))
       break

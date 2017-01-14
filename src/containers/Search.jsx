@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import SearchBar from '../components/SearchBar.jsx'
-import SearchResults from '../components/SearchResults.jsx'
-import { sendSearchData, enableGeolocation, setCoordinates } from '../actions/actions'
+import SearchResult from '../components/SearchResult.jsx'
+import { sendSearchData, enableGeolocation, setCoordinates, persistUserCoordinates } from '../actions/actions'
 import store from '../store/store'
 
 class Search extends Component {
@@ -35,7 +35,9 @@ class Search extends Component {
     }
 
     componentDidMount() {
-      if(!this.props.ui.searchDataSent) {
+      if(this.props.ui.searchDataSent) {
+        return
+      }
         navigator.geolocation.getCurrentPosition(data => {
           const coordinates = JSON.stringify({
             search: {
@@ -44,28 +46,43 @@ class Search extends Component {
             }
           })
           store.dispatch(setCoordinates(coordinates))
+          store.dispatch(persistUserCoordinates(coordinates))
           store.dispatch(enableGeolocation())
           store.dispatch(sendSearchData(coordinates))
         })
-      }
+    }
+
+    componentWillReceiveProps(newProps) {
+      // console.log(newProps)
     }
 
     render() {
-      if(this.props.ui.error) {
-        console.error("Error", this.props.ui.error)
-      }
       const { searches, ui, user } = this.props
+      if(ui.error) {
+        console.error("Error", ui.error)
+      }
+
+      const results = <div>Search results here</div>
+                      &&
+                      searches.results.map(result =>
+                        <SearchResult key={result.id}
+                                      result={result}
+                                      center={searches.center}
+                                      isLoggedIn={user.loggedIn}
+                                      plans={user.plans}/>
+                        )
+
       return (<section className="container">
         <h1>Search for a quiet place</h1>
         <SearchBar isUsingGeolocation={ui.isUsingGeolocation}
                   submitSearch={this.submitSearch.bind(this)}
                   updateSearchEntry={this.updateSearchEntry.bind(this)}
                   />
-        { searches.results ? <SearchResults results={searches.results} center={searches.center} isLoggedIn={user.loggedIn} /> : <div>Search results here</div> }
+        {results}
       </section>)
     }
 }
 
-const mapStateToProps = state => ({user: state.user, ui: state.ui, searches: state.searches })
+const mapStateToProps = state => ({ user: state.user, ui: state.ui, searches: state.searches })
 
 export default connect(mapStateToProps)(Search)
