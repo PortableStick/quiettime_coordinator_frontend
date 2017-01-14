@@ -2,11 +2,9 @@ import React from 'react'
 import Rater from 'react-rater'
 import '../scss/search-results.scss'
 import '../../node_modules/react-rater/lib/react-rater.css'
+import AttendingButton from '../containers/AttendingButton.jsx'
 
 export default props => {
-  const attendBtn = <button type="button" className="btn btn-default">Attend</button>
-  const goingBtn = <button type="button" className="btn btn-success attending-btn">Attending</button>
-
   const results = props.results
     .map(result => <li key={result.id} className="row">
       <img src={result.image_url} className="col-xs-3 result-img"/>
@@ -19,8 +17,7 @@ export default props => {
         <div>{result.rating} out of 5 stars, {result.review_count} reviews</div>
       </div>
       <div className="col-xs-3">
-        {result.user_going ? goingBtn : attendBtn}
-        <div>{result.attending} attending</div>
+        <AttendingButton going={result.user_going} attending={result.attending} location={result.id} isLoggedIn={props.isLoggedIn} center={props.center}/>
       </div>
       </li>)
   return (

@@ -14,7 +14,10 @@ import { passwordResetSent,
         receivedUserDataAfterRequest,
         reportServerError,
         receiveSearchResults,
-        resetLoginSent } from '../actions/actions'
+        resetLoginSent,
+        resetAddLocationSent,
+        resetRemoveLocationSent,
+        confirmAddLocation } from '../actions/actions'
 
 const API_URL = "http://localhost:3000"
 const methods = {
@@ -27,7 +30,6 @@ const methods = {
 export const dataService = store => next => action => {
   let user = store.getState().user
   let headers = new Headers({
-
     "content-type": "application/json"
   })
   let fetchParams = {
@@ -67,12 +69,17 @@ export const dataService = store => next => action => {
     case "LOGIN":
       store.dispatch(loginSent())
       fetch(`${API_URL}/api/v1/tokens`, {...fetchParams, method: methods.POST, body: action.payload })
-        .then(response => response.json())
+        .then(response => {
+          if(response.ok) {
+            return response.json()
+          } else {
+            throw {status: response.status, message: response.statusText}
+          }
+        })
         .then(userData => {
           store.dispatch(resetLoginSent())
           return store.dispatch(receivedUserDataAfterRequest(userData))
-        })
-        .catch(error => store.dispatch(reportServerError(error)))
+        }, error => store.dispatch(reportServerError(error)))
       break
     case "SIGNUP":
       store.dispatch(signupSent())
@@ -102,29 +109,46 @@ export const dataService = store => next => action => {
       break
     case "SEND_SEARCH_DATA":
       store.dispatch(searchDataSent())
-      fetch(`${API_URL}/api/v1/searches`, {...fetchParams, method: methods.POST, body: action.payload})
+      if(user.loggedIn) {
+        headers.set("authorization", user.token)
+      }
+      fetch(`${API_URL}/api/v1/searches`, {...fetchParams, method: methods.POST, body: action.payload, headers: headers})
         .then(response => response.json())
         .then(results => store.dispatch(receiveSearchResults(results)))
         .catch(error => store.dispatch(reportServerError(error)))
       break
     case "ADD_LOCATION_TO_USER":
       store.dispatch(addLocationSent())
-      fetch(`${API_URL}/api/v1/plans`, {...fetchParams, method: methods.POST })
-        .then(response => response.json())
+      headers.set("authorization", user.token)
+      fetch(`${API_URL}/api/v1/plans`, {...fetchParams, method: methods.POST, headers: headers, body: action.payload })
+        .then(response => {
+          if(response.ok) {
+            return response.json()
+          } else {
+            throw {status: response.status, message: response.statusText}
+          }
+        })
         .then(userData => {
           store.dispatch(resetAddLocationSent())
-          return store.dispatch(receivedUserDataAfterRequest(userData))
-        })
+          return store.dispatch(confirmAddLocation())
+        }, error => store.dispatch(reportServerError(error)))
         .catch(error => store.dispatch(reportServerError(error)))
       break
     case "REMOVE_LOCATION_FROM_USER":
       store.dispatch(removeLocationSent())
-      fetch(`${API_URL}/api/v1/plans${action.payload.location}`, {...fetchParams, method: methods.DELETE })
-        .then(response => response.json())
-        .then(userData => {
-          store.dispatch(resetRemoveLocationSent())
-          return store.dispatch(receivedUserDataAfterRequest(userData))
+      headers.set("authorization", user.token)
+      fetch(`${API_URL}/api/v1/plans${action.payload.location}`, {...fetchParams, method: methods.DELETE, headers: headers })
+        .then(response => {
+          if(response.ok) {
+            return response.json()
+          } else {
+            throw {status: response.status, message: response.statusText}
+          }
         })
+        .then(userData => {
+          store.dispatch(resetAddLocationSent())
+          return store.dispatch(confirmAddLocation())
+        }, error => store.dispatch(reportServerError(error)))
         .catch(error => store.dispatch(reportServerError(error)))
       break
     default:

@@ -54,11 +54,14 @@ class Search extends Component {
       if(this.props.ui.error) {
         console.error("Error", this.props.ui.error)
       }
-      const { searches, ui } = this.props
+      const { searches, ui, user } = this.props
       return (<section className="container">
         <h1>Search for a quiet place</h1>
-        <SearchBar isUsingGeolocation={ui.isUsingGeolocation} submitSearch={this.submitSearch.bind(this)} updateSearchEntry={this.updateSearchEntry.bind(this)}/>
-        { searches.results ? <SearchResults results={searches.results} /> : <div>Search results here</div> }
+        <SearchBar isUsingGeolocation={ui.isUsingGeolocation}
+                  submitSearch={this.submitSearch.bind(this)}
+                  updateSearchEntry={this.updateSearchEntry.bind(this)}
+                  />
+        { searches.results ? <SearchResults results={searches.results} center={searches.center} isLoggedIn={user.loggedIn} /> : <div>Search results here</div> }
       </section>)
     }
 }

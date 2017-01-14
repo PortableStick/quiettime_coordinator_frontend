@@ -5,10 +5,11 @@ import { dataService } from '../middleware/dataServiceMiddleware'
 
 // get user data from browser storage
 const userDataFromBrowserStorage = {
-  userName: null,
+  username: null,
   email: null,
   plans: [],
-  loggedIn: false
+  loggedIn: false,
+  coordinates: null
 }
 
 const initialData = {
@@ -19,7 +20,7 @@ const initialData = {
     loggedIn: false
   }
 }
-
-const middleware = applyMiddleware(dataService, reduxThunk)
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+const middleware = composeEnhancers(applyMiddleware(dataService, reduxThunk))
 
 export default createStore(rootReducer, {...initialData, user: userDataFromBrowserStorage}, middleware)

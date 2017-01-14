@@ -9,6 +9,7 @@ export const newUserConfirmationSent = () => ({ type: "USER_CONFIRMATION_REQUEST
 export const userConfirmed = () => ({ type: "USER_CONFIRMED" })
 export const loginSent = () => ({ type: "LOGIN_SENT" })
 export const signupSent = () => ({ type: "SIGNUP_SENT" })
+export const logout = () => ({ type: "LOGOUT" })
 export const userUpdateSent = () => ({ type: "USER_UPDATE_SENT" })
 export const userDeletionSent = () => ({ type: "USER_DELETION_SENT" })
 export const searchDataSent = () => ({ type: "SEARCH_DATA_SENT" })
@@ -27,6 +28,7 @@ export const turnOnPasswordEditMode = () => ({ type: "TURN_ON_PASSWORD_EDIT_MODE
 export const turnOffPasswordEditMode = () => ({ type: "TURN_OFF_PASSWORD_EDIT_MODE" })
 export const enableGeolocation = () => ({ type: "ENABLE_GEOLOCATION" })
 export const setCoordinates = coordinates => ({ type: "SET_COORDINATES", payload: coordinates })
+export const confirmAddLocation = () => ({ type: "CONFIRM_ADD_LOCATION" })
 /****************************
 *   Middleware Invocations  *
 ****************************/
@@ -47,8 +49,7 @@ export const removeLocationFromUser = data => ({ type: "REMOVE_LOCATION_FROM_USE
 ****************************/
 
 export const receivedUserDataAfterRequest = userData => {
-  console.log("Data received")
-  browserHistory.push('/')
+  browserHistory.push('/search')
   return { type: "RECEIVE_USER_DATA", payload: userData}
 }
 export const reportServerError = error => ({ type: "REPORT_SERVER_ERROR", payload: error})
