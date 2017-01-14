@@ -17,7 +17,8 @@ import { passwordResetSent,
         resetLoginSent,
         resetAddLocationSent,
         resetRemoveLocationSent,
-        confirmAddLocation } from '../actions/actions'
+        confirmAddLocation,
+        resetSignupSent } from '../actions/actions'
 
 const API_URL = "http://localhost:3000"
 const methods = {
@@ -83,12 +84,18 @@ export const dataService = store => next => action => {
       break
     case "SIGNUP":
       store.dispatch(signupSent())
-      fetch(`${API_URL}/api/v1/users`, {...fetchParams, method: methods.POST })
-        .then(response => response.json())
+      fetch(`${API_URL}/api/v1/users`, {...fetchParams, method: methods.POST, body: action.payload })
+        .then(response => {
+          if(response.ok) {
+            return response.json()
+          } else {
+            throw {status: response.status, message: response.statusText}
+          }
+        })
         .then(userData => {
           store.dispatch(resetSignupSent())
           return store.dispatch(receivedUserDataAfterRequest(userData))
-        })
+        }, error => store.dispatch(reportServerError(error)))
         .catch(error => store.dispatch(reportServerError(error)))
       break
     case "UPDATE_USER_PROFILE":

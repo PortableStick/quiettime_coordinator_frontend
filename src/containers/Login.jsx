@@ -8,14 +8,30 @@ import '../scss/login.scss'
 class Login extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      searchinfo: "",
+      password: ""
+    }
+  }
+
+  updateSearchinfo(event) {
+    this.setState({
+      searchinfo: event.target.value
+    })
+  }
+
+  updatePassword(event) {
+    this.setState({
+      password: event.target.value
+    })
   }
 
   sendLogin(event) {
     event.preventDefault()
     const loginObject = {
       auth: {
-        password: this.password.value,
-        searchinfo: this.userName.value
+        password: this.state.password,
+        searchinfo: this.state.searchinfo
       }
     }
     store.dispatch(login(JSON.stringify(loginObject)))

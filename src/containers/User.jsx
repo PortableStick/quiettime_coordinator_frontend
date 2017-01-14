@@ -50,14 +50,14 @@ class User extends Component {
         console.error(this.props.ui.error)
       }
       return(
-        <div>
+        <section className="container">
           <h1>User Info</h1>
           { this.props.ui.editMode ? <UserForm user={this.props.user} /> : <UserDisplay user={this.props.user}/>}
           { this.props.ui.editMode ? <div><button type="button" className="btn btn-success" onClick={this.saveInfo}>Save</button><button type="button" className="btn btn-danger" onClick={this.cancelInfo}>Cancel</button></div> : <button type="button" className="btn btn-default" onClick={this.editInfo}>Edit</button>}
           <UserPassword passwordEditMode={this.props.ui.passwordEditMode} enableEdit={this.editPassword} stopEdit={this.savePassword} cancelEdit={this.cancelPassword} />
           { this.props.ui.userConfirmed ? null : <button className="btn btn-warning">Send new confirmation</button>}
           <UserPlans user={this.props.user} />
-        </div>
+        </section>
       )
     }
 }
