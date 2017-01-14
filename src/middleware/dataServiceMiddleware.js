@@ -110,7 +110,7 @@ export const dataService = store => next => action => {
         .then(response => store.dispatch(requestReceivedByServer()))
         .catch(error => store.dispatch(reportServerError(error)))
       break
-    case "SEND_UNAUTHETNICATED_SEARCH_DATA":
+    case "SEND_UNAUTHENTICATED_SEARCH_DATA":
       store.dispatch(searchDataSent())
       fetch(`${API_URL}/api/v1/searches`, {...fetchParams, method: methods.POST, body: action.payload})
         .then(handleResponse)
@@ -122,9 +122,7 @@ export const dataService = store => next => action => {
       break
     case "SEND_AUTHENTICATED_SEARCH_DATA":
       store.dispatch(searchDataSent())
-      if(user.loggedIn) {
-        headers.set("authorization", user.token)
-      }
+      headers.set("authorization", user.token)
       fetch(`${API_URL}/api/v1/searches`, {...fetchParams, method: methods.POST, body: action.payload, headers: headers})
         .then(handleResponse)
         .then(results => {
@@ -136,22 +134,22 @@ export const dataService = store => next => action => {
     case "ADD_LOCATION_TO_USER":
       store.dispatch(addLocationSent())
       headers.set("authorization", user.token)
-      fetch(`${API_URL}/api/v1/plans`, {...fetchParams, method: methods.POST, headers: headers, body: action.payload })
+      fetch(`${API_URL}/api/v1/plans`, {...fetchParams, method: methods.POST, headers: headers, body: action.payload.updateData })
         .then(handleResponse)
-        .then(userData => {
+        .then(response => {
           store.dispatch(resetAddLocationSent())
-          return store.dispatch(confirmAddLocation())
+          return store.dispatch(confirmAddLocation(response.plans))
         }, error => store.dispatch(reportServerError(error)))
         .catch(error => store.dispatch(reportServerError(error)))
       break
     case "REMOVE_LOCATION_FROM_USER":
       store.dispatch(removeLocationSent())
       headers.set("authorization", user.token)
-      fetch(`${API_URL}/api/v1/plans${action.payload.location}`, {...fetchParams, method: methods.DELETE, headers: headers })
+      fetch(`${API_URL}/api/v1/plans/${action.payload.id}`, {...fetchParams, method: methods.DELETE, headers: headers })
         .then(handleResponse)
-        .then(userData => {
+        .then(response => {
           store.dispatch(resetAddLocationSent())
-          return store.dispatch(confirmRemoveLocation())
+          return store.dispatch(confirmRemoveLocation(response.plans))
         }, error => store.dispatch(reportServerError(error)))
         .catch(error => store.dispatch(reportServerError(error)))
       break

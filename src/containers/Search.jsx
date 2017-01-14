@@ -2,7 +2,15 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import SearchBar from '../components/SearchBar.jsx'
 import SearchResult from '../components/SearchResult.jsx'
-import { sendAuthenticatedSearchData, sendUnauthenticatedSearchData, enableGeolocation, setCoordinates, persistUserCoordinates } from '../actions/actions'
+import { sendAuthenticatedSearchData,
+          sendUnauthenticatedSearchData,
+          enableGeolocation,
+          setCoordinates,
+          persistUserCoordinates,
+          removeLocationFromUser,
+          addLocationToUser,
+          addLocationSent,
+          removeLocationSent } from '../actions/actions'
 import store from '../store/store'
 
 class Search extends Component {
@@ -14,17 +22,54 @@ class Search extends Component {
       }
     }
 
+    setAttending(id, center) {
+      const updateObj = {
+        id: id,
+        updateData: JSON.stringify({
+          update: {
+            yelp_id: id,
+            center: center
+          }
+        })
+      }
+      store.dispatch(addLocationToUser(updateObj))
+      store.dispatch(addLocationSent())
+    }
+
+    removeAttending(id, center) {
+      const updateObj = {
+        id: id,
+        updateData: JSON.stringify({
+          update: {
+            yelp_id: location,
+            center: center
+          }
+        })
+      }
+      store.dispatch(removeLocationFromUser(updateObj))
+      store.dispatch(removeLocationSent())
+    }
+
     submitSearch(event) {
       event.preventDefault()
       if(this.state.searchEntry === "" && this.props.ui.isUsingGeolocation) {
-        store.dispatch(sendSearchData(this.props.user.coordinates))
+        const coordinates = this.props.user.coordinates
+       if(this.props.user.loggedIn) {
+          store.dispatch(sendAuthenticatedSearchData(coordinates))
+        } else {
+          store.dispatch(sendUnauthenticatedSearchData(coordinates))
+        }
       } else {
         const searchObj = JSON.stringify({
           search: {
             name: this.state.searchEntry
           }
         })
-        store.dispatch(sendSearchData(searchObj))
+        if(this.props.user.loggedIn) {
+          store.dispatch(sendAuthenticatedSearchData(searchObj))
+        } else {
+          store.dispatch(sendUnauthenticatedSearchData(searchObj))
+        }
       }
     }
 
@@ -57,15 +102,10 @@ class Search extends Component {
     }
 
     componentWillReceiveProps(newProps) {
-      // console.log(newProps)
     }
 
     render() {
       const { searches, ui, user } = this.props
-      if(ui.error) {
-        console.error("Error", ui.error)
-      }
-
       const results = <div>Search results here</div>
                       &&
                       searches.results.map(result =>
@@ -73,7 +113,10 @@ class Search extends Component {
                                       result={result}
                                       center={searches.center}
                                       isLoggedIn={user.loggedIn}
-                                      plans={user.plans}/>
+                                      id={result.id}
+                                      setAttending={this.setAttending.bind(this, result.id, searches.center)}
+                                      removeAttending={this.removeAttending.bind(this, result.id, searches.center)}
+                                      />
                         )
 
       return (<section className="container">
