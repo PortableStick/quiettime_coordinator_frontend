@@ -8,9 +8,8 @@ import { sendAuthenticatedSearchData,
           setCoordinates,
           persistUserCoordinates,
           removeLocationFromUser,
-          addLocationToUser,
-          addLocationSent,
-          removeLocationSent } from '../actions/actions'
+          addLocationToUser
+           } from '../actions/actions'
 import store from '../store/store'
 
 class Search extends Component {
@@ -33,7 +32,6 @@ class Search extends Component {
         })
       }
       store.dispatch(addLocationToUser(updateObj))
-      store.dispatch(addLocationSent())
     }
 
     removeAttending(id, center) {
@@ -47,7 +45,6 @@ class Search extends Component {
         })
       }
       store.dispatch(removeLocationFromUser(updateObj))
-      store.dispatch(removeLocationSent())
     }
 
     submitSearch(event) {
@@ -116,8 +113,7 @@ class Search extends Component {
                                       id={result.id}
                                       setAttending={this.setAttending.bind(this, result.id, searches.center)}
                                       removeAttending={this.removeAttending.bind(this, result.id, searches.center)}
-                                      />
-                        )
+                                      />)
 
       return (<section className="container">
         <h1>Search for a quiet place</h1>

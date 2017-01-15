@@ -148,7 +148,7 @@ export const dataService = store => next => action => {
       fetch(`${API_URL}/api/v1/plans/${action.payload.id}`, {...fetchParams, method: methods.DELETE, headers: headers })
         .then(handleResponse)
         .then(response => {
-          store.dispatch(resetAddLocationSent())
+          store.dispatch(resetRemoveLocationSent())
           return store.dispatch(confirmRemoveLocation(response.plans))
         }, error => store.dispatch(reportServerError(error)))
         .catch(error => store.dispatch(reportServerError(error)))

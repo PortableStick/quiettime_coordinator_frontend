@@ -14,7 +14,5 @@ export default props => <li className="row">
         <Rater rating={props.result.rating} total={5} interactive={false} />
         <div>{props.result.rating} out of 5 stars, {props.result.review_count} reviews</div>
       </div>
-      <div className="col-xs-3">
-        <AttendingButton key={`attending-btn-${props.result.id}`} userGoing={props.result.user_going} attending={props.result.attending} setAttending={props.setAttending} removeAttending={props.removeAttending} id={props.result.id} isLoggedIn={props.isLoggedIn} center={props.center}/>
-      </div>
+      <AttendingButton key={`attending-btn-${props.result.id}`} userGoing={props.result.user_going} attending={props.result.attending} setAttending={props.setAttending} removeAttending={props.removeAttending} id={props.result.id} isLoggedIn={props.isLoggedIn} center={props.center}/>
     </li>

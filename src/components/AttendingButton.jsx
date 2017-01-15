@@ -7,7 +7,7 @@ export default props => {
   const goingBtn = <button type="button" className="btn btn-success attending-btn" onClick={props.removeAttending} >Attending</button>
   if(props.isLoggedIn) {
     return (
-      <div>
+      <div className="col-xs-3">
         {props.userGoing ? goingBtn : attendBtn}
         <div>{props.attending} attending</div>
       </div>
