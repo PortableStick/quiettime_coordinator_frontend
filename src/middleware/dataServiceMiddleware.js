@@ -60,9 +60,16 @@ export const dataService = store => next => action => {
         .catch(error => store.dispatch(reportServerError(error)))
       break
     case "SEND_USER_CONFIRMATION":
+      headers.set("authorization", user.token)
       store.dispatch(newUserConfirmationSent())
-      fetch(`${API_URL}/api/v1/user_confirmation`, {...fetchParams, method: methods.POST })
-        .then(response => store.dispatch(requestReceivedByServer()))
+      fetch(`${API_URL}/api/v1/user_confirmation/${user.id}`, {...fetchParams, headers: headers })
+        .then(response => {
+          if(response.ok) {
+            store.dispatch(requestReceivedByServer())
+          } else {
+            reportServerError("Confirmation not sent")
+          }
+        })
         .catch(error => store.dispatch(reportServerError(error)))
       break
     case "CONFIRM_USER":

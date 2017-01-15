@@ -36,14 +36,14 @@ const initialUIData = {
 function userReducer(state=initialUserData, action) {
   switch (action.type) {
     case "RECEIVE_USER_DATA":
-      return {...state, ...action.payload.user, loggedIn: true }
+      return { ...state, ...action.payload.user, loggedIn: true }
     case "CONFIRM_ADD_LOCATION":
     case "CONFIRM_REMOVE_LOCATION":
-      return {...state, plans: action.payload }
+      return { ...state, plans: action.payload }
     case "LOGOUT":
-      return {...initialUserData }
+      return { ...initialUserData }
     case "SET_COORDINATES":
-      return {...state, coordinates: action.payload }
+      return { ...state, coordinates: action.payload }
     default:
       return state
   }
@@ -52,14 +52,14 @@ function userReducer(state=initialUserData, action) {
 function searchesReducer(state=initialSearchData, action) {
   switch (action.type) {
     case "RECEIVE_SEARCH_RESULTS":
-      return {...action.payload}
+      return { ...action.payload }
     case "RECEIVE_USER_DATA":
-      const updatedResults = state.results.map(result => ({...result, user_going: action.payload.user.plans.indexOf(result.id) > -1}))
-      return {...state, results: updatedResults}
+      const updatedResults = state.results.map(result => ({ ...result, user_going: action.payload.user.plans.indexOf(result.id) > -1 }))
+      return { ...state, results: updatedResults }
     case "CONFIRM_ADD_LOCATION":
     case "CONFIRM_REMOVE_LOCATION":
-      const updatedResults2 = state.results.map(result => ({...result, user_going: action.payload.indexOf(result.id) > -1}))
-      return {...state, results: updatedResults2}
+      const updatedResults2 = state.results.map(result => ({ ...result, user_going: action.payload.indexOf(result.id) > -1 }))
+      return { ...state, results: updatedResults2 }
     default:
       return state
   }

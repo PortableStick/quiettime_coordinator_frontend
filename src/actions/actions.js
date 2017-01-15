@@ -43,15 +43,15 @@ export const reportLocalStorageError = error => ({ type: "LOCAL_STORAGE_ERROR", 
 *   Middleware Invocations  *
 ****************************/
 
-export const sendResetPassword = () => ({ type: "SEND_RESET_PASSWORD"})
-export const sendUserConfirmation = () => ({ type: "SEND_USER_CONFIRMATION"})
-export const confirmUser = () => ({ type: "CONFIRM_USER"})
-export const login = credentials => ({ type: "LOGIN", payload: credentials})
-export const signup = credentials => ({ type: "SIGNUP", payload: credentials})
+export const sendResetPassword = () => ({ type: "SEND_RESET_PASSWORD" })
+export const sendUserConfirmation = () => ({ type: "SEND_USER_CONFIRMATION" })
+export const confirmUser = () => ({ type: "CONFIRM_USER" })
+export const login = credentials => ({ type: "LOGIN", payload: credentials })
+export const signup = credentials => ({ type: "SIGNUP", payload: credentials })
 export const updateUserProfile = data => ({ type: "UPDATE_USER_PROFILE", payload: data})
-export const deleteUser = data => ({ type: "DELETE_USER", payload: data})
-export const sendUnauthenticatedSearchData = searchParameters => ({ type: "SEND_UNAUTHENTICATED_SEARCH_DATA", payload: searchParameters})
-export const sendAuthenticatedSearchData = searchParameters => ({ type: "SEND_AUTHENTICATED_SEARCH_DATA", payload: searchParameters})
+export const deleteUser = data => ({ type: "DELETE_USER", payload: data })
+export const sendUnauthenticatedSearchData = searchParameters => ({ type: "SEND_UNAUTHENTICATED_SEARCH_DATA", payload: searchParameters })
+export const sendAuthenticatedSearchData = searchParameters => ({ type: "SEND_AUTHENTICATED_SEARCH_DATA", payload: searchParameters })
 export const addLocationToUser = data => ({ type: "ADD_LOCATION_TO_USER", payload: data })
 export const removeLocationFromUser = data => ({ type: "REMOVE_LOCATION_FROM_USER", payload: data })
 

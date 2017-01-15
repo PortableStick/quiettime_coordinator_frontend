@@ -100,6 +100,10 @@ class User extends Component {
       })
     }
 
+    sendUserConfirmation() {
+      store.dispatch(actions.sendUserConfirmation())
+    }
+
     componentWillMount() {
       if(!this.props.user.loggedIn) {
         browserHistory.push('/login')
@@ -123,7 +127,7 @@ class User extends Component {
               updatePassword={this.updatePassword.bind(this)}
               updatePasswordConfirmation={this.updatePasswordConfirmation.bind(this)}
               />
-          { this.props.ui.userConfirmed ? null : <button className="btn btn-warning">Send new confirmation</button>}
+          { this.props.ui.userConfirmed ? null : <button className="btn btn-warning" onClick={this.sendUserConfirmation.bind(this)}>Send new confirmation</button>}
           <UserPlans user={this.props.user} />
           <button type="button" className="btn btn-danger" onClick={this.logout.bind(this)}>Logout</button>
         </section>
