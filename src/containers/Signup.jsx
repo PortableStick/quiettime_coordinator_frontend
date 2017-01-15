@@ -147,9 +147,9 @@ class Signup extends Component {
           </div>
           <div className="form-group">
             <label htmlFor="signup-password">Password</label>
-            <input type="text" className={"form-control" + (this.state.passwordError ?" error" : '')} id="signup-password" onChange={this.updateUserPassword.bind(this)} onBlur={this.validatePasswords.bind(this)} ref={input => this.passwordInput = input }/>
+            <input type="password" className={"form-control" + (this.state.passwordError ?" error" : '')} id="signup-password" onChange={this.updateUserPassword.bind(this)} onBlur={this.validatePasswords.bind(this)} ref={input => this.passwordInput = input }/>
             <label htmlFor="signup-confirmation">Password Confirmation</label>
-            <input type="text" className={"form-control" + (this.state.passwordError ? " error" : '')} id="signup-confirmation" onChange={this.updateUserPasswordConfirmation.bind(this)} onBlur={this.validatePasswords.bind(this)} ref={input => this.passwordConfirmationInput = input } />
+            <input type="password" className={"form-control" + (this.state.passwordError ? " error" : '')} id="signup-confirmation" onChange={this.updateUserPasswordConfirmation.bind(this)} onBlur={this.validatePasswords.bind(this)} ref={input => this.passwordConfirmationInput = input } />
           </div>
           <button type="submit" className="btn btn-success btn-lg">Signup</button>
           <Link to="/" onClick={this.resetState.bind(this)} className="btn btn-danger btn-lg">Cancel</Link>

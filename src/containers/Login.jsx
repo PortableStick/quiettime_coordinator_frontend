@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { login } from '../actions/actions'
+import { login, requestPasswordReset } from '../actions/actions'
 import store from '../store/store'
 import '../scss/login.scss'
 
@@ -44,12 +44,6 @@ class Login extends Component {
                           :
                           <div className="error">{"" && this.props.ui.error.message}</div>
 
-    // if(this.props.ui.error) {
-    //   console.error(this.props.ui.error)
-    // }
-    // if(this.props.ui.localStorageError) {
-    //   console.error("There was an error persisiting user data", this.props.ui.localStorageError)
-    // }
     return(
       <section className="container">
         <form>
@@ -63,6 +57,7 @@ class Login extends Component {
           </div>
           <button type="submit" className="btn btn-success btn-lg" onClick={this.sendLogin.bind(this)}>Log In</button>
           <Link to="/" className="btn btn-danger btn-lg">Cancel</Link>
+          <Link to="/reset" className="btn btn-primary btn-lg">I Forgot My Password</Link>
         </form>
         {errorMessage}
       </section>

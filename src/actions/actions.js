@@ -20,7 +20,10 @@ export const resetSearchDataSent = () => ({ type: "RESET_SEARCH_DATA_SENT" })
 export const addLocationSent = () => ({ type: "ADD_LOCATION_SENT" })
 export const removeLocationSent = () => ({ type: "REMOVE_LOCATION_SENT" })
 export const requestReceivedByServer = () => ({ type: "REQUEST_RECEIVED_BY_SERVER" })
-export const resetSentPassword = () => ({ type: "RESET_SENT_PASSWORD" })
+export const resetSentPassword = () => {
+  browserHistory.push('/')
+  return { type: "RESET_SENT_PASSWORD" }
+}
 export const resetLoginSent = () => ({ type: "RESET_LOGIN_SENT" })
 export const resetSignupSent = () => ({ type: "RESET_SIGNUP_SENT" })
 export const resetUserUpdateSent = () => ({ type: "RESET_USER_UPDATE_SENT" })
@@ -32,8 +35,8 @@ export const turnOnPasswordEditMode = () => ({ type: "TURN_ON_PASSWORD_EDIT_MODE
 export const turnOffPasswordEditMode = () => ({ type: "TURN_OFF_PASSWORD_EDIT_MODE" })
 export const enableGeolocation = () => ({ type: "ENABLE_GEOLOCATION" })
 export const setCoordinates = coordinates => ({ type: "SET_COORDINATES", payload: coordinates })
-export const confirmAddLocation = plans => ({ type: "CONFIRM_ADD_LOCATION", payload: plans })
-export const confirmRemoveLocation = plans => ({ type: "CONFIRM_REMOVE_LOCATION", payload: plans })
+export const confirmAddLocation = (plans, inc) => ({ type: "CONFIRM_ADD_LOCATION", payload: plans, inc: inc })
+export const confirmRemoveLocation = (plans, inc) => ({ type: "CONFIRM_REMOVE_LOCATION", payload: plans, inc: inc })
 export const persistUserData = userData => ({ type: "PERSIST_USER_DATA", payload: userData })
 export const persistUserLoggedin = loggedIn => ({ type: "PERSIST_USER_LOGGEDIN", payload: loggedIn })
 export const persistUserCoordinates = coordinates => ({ type: "PERSIST_USER_COORDINATES", payload: coordinates })
@@ -63,6 +66,9 @@ export const receivedUserDataAfterRequest = userData => {
   browserHistory.push('/search')
   return { type: "RECEIVE_USER_DATA", payload: userData}
 }
-export const reportServerError = error => ({ type: "REPORT_SERVER_ERROR", payload: error})
+export const reportServerError = error => {
+  console.error(`Error reported: ${error}`)
+  return { type: "REPORT_SERVER_ERROR", payload: error}
+}
 export const receiveSearchResults = results => ({ type: "RECEIVE_SEARCH_RESULTS", payload: results})
-export const requestPasswordReset = () => ({ type: "REQUEST_PASSWORD_RESET"})
+export const requestPasswordReset = email => ({ type: "REQUEST_PASSWORD_RESET", payload: email })

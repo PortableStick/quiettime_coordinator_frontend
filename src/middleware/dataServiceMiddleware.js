@@ -22,7 +22,8 @@ import { passwordResetSent,
         resetSignupSent,
         persistUserData,
         resetSearchDataSent,
-        resetUserUpdateSent } from '../actions/actions'
+        resetUserUpdateSent,
+        resetSentPassword } from '../actions/actions'
 
 const API_URL = "http://localhost:3000"
 const methods = {
@@ -44,25 +45,30 @@ export const dataService = store => next => action => {
   next(action)
   switch(action.type) {
     case "REQUEST_PASSWORD_RESET":
+      headers.set("authorization", user.token)
       store.dispatch(passwordResetSent())
-      fetch(`${API_URL}/password_resets`, {...fetchParams, method: methods.POST })
-        .then(response => store.dispatch(requestReceivedByServer()))
+      fetch(`${API_URL}/password_resets`, {...fetchParams, method: methods.POST, body: action.payload })
+        .then(response => {
+          store.dispatch(resetSentPassword())
+          return store.dispatch(requestReceivedByServer())
+        })
         .catch(error => store.dispatch(reportServerError(error)))
       break
     case "SEND_RESET_PASSWORD":
+      headers.set("authorization", user.token)
       store.dispatch(newPasswordSent())
-      fetch(`${API_URL}/password_resets`, {...fetchParams, method: methods.PATCH })
-        .then(response => response.json())
+      fetch(`${API_URL}/password_resets`, {...fetchParams, method: methods.PATCH, headers: headers, body: action.payload })
+        .then(handleResponse)
         .then(userData => {
           store.dispatch(resetSentPassword())
           return store.dispatch(receivedUserDataAfterRequest(userData))
-        })
+        }, error => store.dispatch(reportServerError(error)))
         .catch(error => store.dispatch(reportServerError(error)))
       break
     case "SEND_USER_CONFIRMATION":
       headers.set("authorization", user.token)
       store.dispatch(newUserConfirmationSent())
-      fetch(`${API_URL}/api/v1/user_confirmation/${user.id}`, {...fetchParams, headers: headers })
+      fetch(`${API_URL}/api/v1/user_confirmation/${action.payload.userid}`, {...fetchParams, headers: headers })
         .then(response => {
           if(response.ok) {
             store.dispatch(requestReceivedByServer())
@@ -145,7 +151,7 @@ export const dataService = store => next => action => {
         .then(handleResponse)
         .then(response => {
           store.dispatch(resetAddLocationSent())
-          return store.dispatch(confirmAddLocation(response.plans))
+          return store.dispatch(confirmAddLocation(response, 1))
         }, error => store.dispatch(reportServerError(error)))
         .catch(error => store.dispatch(reportServerError(error)))
       break
@@ -156,7 +162,7 @@ export const dataService = store => next => action => {
         .then(handleResponse)
         .then(response => {
           store.dispatch(resetRemoveLocationSent())
-          return store.dispatch(confirmRemoveLocation(response.plans))
+          return store.dispatch(confirmRemoveLocation(response, -1))
         }, error => store.dispatch(reportServerError(error)))
         .catch(error => store.dispatch(reportServerError(error)))
       break

@@ -6,6 +6,7 @@ import Search from './containers/Search.jsx'
 import User from './containers/User.jsx'
 import Signup from './containers/Signup.jsx'
 import Login from './containers/Login.jsx'
+import PasswordReset from './containers/PasswordReset.jsx'
 
 export default props => {
   return (
@@ -16,6 +17,7 @@ export default props => {
         <Route path="me" component={User} />
         <Route path="signup" component={Signup} />
         <Route path="login" component={Login} />
+        <Route path="reset" component={PasswordReset} />
       </Route>
     </Router>
   )

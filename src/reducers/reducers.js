@@ -54,12 +54,14 @@ function searchesReducer(state=initialSearchData, action) {
     case "RECEIVE_SEARCH_RESULTS":
       return { ...action.payload }
     case "RECEIVE_USER_DATA":
-      const updatedResults = state.results.map(result => ({ ...result, user_going: action.payload.user.plans.indexOf(result.id) > -1 }))
-      return { ...state, results: updatedResults }
     case "CONFIRM_ADD_LOCATION":
     case "CONFIRM_REMOVE_LOCATION":
-      const updatedResults2 = state.results.map(result => ({ ...result, user_going: action.payload.indexOf(result.id) > -1 }))
-      return { ...state, results: updatedResults2 }
+      const updatedResults = state.results.map(result => {
+        const going = action.payload.user.plans.indexOf(result.id) > -1
+        const changing = result.user_going !== going ? true : false
+        return { ...result, user_going: going, attending: (action.inc && changing) ? result.attending += action.inc : result.attending }
+      })
+      return { ...state, results: updatedResults }
     default:
       return state
   }
