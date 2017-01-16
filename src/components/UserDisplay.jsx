@@ -11,6 +11,7 @@ export default props => {
         <label htmlFor="user-email">Email: </label>
         <span>{props.user.email}</span>
       </div>
+      <button type="button" className="btn btn-default" onClick={props.editInfo}>Edit</button>
     </form>
   )
 }

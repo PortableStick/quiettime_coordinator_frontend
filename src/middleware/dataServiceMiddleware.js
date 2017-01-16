@@ -1,4 +1,8 @@
 import fetch from 'isomorphic-fetch'
+import { methods } from '../constants/methods'
+import { API_URL } from '../config/config'
+import { handleResponse, handleError } from '../utils/dataHandlers'
+
 import { passwordResetSent,
         newPasswordSent,
         newUserConfirmationSent,
@@ -25,14 +29,6 @@ import { passwordResetSent,
         resetUserUpdateSent,
         resetSentPassword } from '../actions/actions'
 
-const API_URL = "http://localhost:3000"
-const methods = {
-  GET: 'GET',
-  POST: 'POST',
-  PATCH: 'PATCH',
-  DELETE: 'DELETE'
-}
-
 export const dataService = store => next => action => {
   let user = store.getState().user
   let headers = new Headers({
@@ -52,7 +48,7 @@ export const dataService = store => next => action => {
           store.dispatch(resetSentPassword())
           return store.dispatch(requestReceivedByServer())
         })
-        .catch(error => store.dispatch(reportServerError(error)))
+        .catch(handleError)
       break
     case "SEND_RESET_PASSWORD":
       headers.set("authorization", user.token)
@@ -62,8 +58,8 @@ export const dataService = store => next => action => {
         .then(userData => {
           store.dispatch(resetSentPassword())
           return store.dispatch(receivedUserDataAfterRequest(userData))
-        }, error => store.dispatch(reportServerError(error)))
-        .catch(error => store.dispatch(reportServerError(error)))
+        }, handleError)
+        .catch(handleError)
       break
     case "SEND_USER_CONFIRMATION":
       headers.set("authorization", user.token)
@@ -76,13 +72,13 @@ export const dataService = store => next => action => {
             reportServerError("Confirmation not sent")
           }
         })
-        .catch(error => store.dispatch(reportServerError(error)))
+        .catch(handleError)
       break
     case "CONFIRM_USER":
       store.dispatch(userConfirmed())
       fetch(`${API_URL}/api/v1/user_confirmation/${action.payload.userid}`, {...fetchParams, method: methods.PATCH })
         .then(response => store.dispatch(requestReceivedByServer()))
-        .catch(error => store.dispatch(reportServerError(error)))
+        .catch(handleError)
       break
     case "LOGIN":
       store.dispatch(loginSent())
@@ -92,7 +88,7 @@ export const dataService = store => next => action => {
           store.dispatch(resetLoginSent())
           store.dispatch(persistUserData(userData))
           return store.dispatch(receivedUserDataAfterRequest(userData))
-        }, error => store.dispatch(reportServerError(error)))
+        }, handleError)
       break
     case "SIGNUP":
       store.dispatch(signupSent())
@@ -102,8 +98,8 @@ export const dataService = store => next => action => {
           store.dispatch(resetSignupSent())
           store.dispatch(persistUserData(userData))
           return store.dispatch(receivedUserDataAfterRequest(userData))
-        }, error => store.dispatch(reportServerError(error)))
-        .catch(error => store.dispatch(reportServerError(error)))
+        }, handleError)
+        .catch(handleError)
       break
     case "UPDATE_USER_PROFILE":
       headers.set("authorization", user.token)
@@ -114,14 +110,14 @@ export const dataService = store => next => action => {
           store.dispatch(resetUserUpdateSent())
           store.dispatch(persistUserData(userData))
           return store.dispatch(receivedUserDataAfterRequest(userData))
-        }, error => store.dispatch(reportServerError(error)))
-        .catch(error => store.dispatch(reportServerError(error)))
+        }, handleError)
+        .catch(handleError)
       break
     case "DELETE_USER":
       store.dispatch(userDeletionSent())
       fetch(`${API_URL}/api/v1/users/${action.payload.id}`, {...fetchParams, method: methods.DELETE })
         .then(response => store.dispatch(requestReceivedByServer()))
-        .catch(error => store.dispatch(reportServerError(error)))
+        .catch(handleError)
       break
     case "SEND_UNAUTHENTICATED_SEARCH_DATA":
       store.dispatch(searchDataSent())
@@ -130,8 +126,8 @@ export const dataService = store => next => action => {
         .then(results => {
           store.dispatch(resetSearchDataSent())
           return store.dispatch(receiveSearchResults(results))
-        }, error => store.dispatch(reportServerError(error)))
-        .catch(error => store.dispatch(reportServerError(error)))
+        }, handleError)
+        .catch(handleError)
       break
     case "SEND_AUTHENTICATED_SEARCH_DATA":
       store.dispatch(searchDataSent())
@@ -141,8 +137,8 @@ export const dataService = store => next => action => {
         .then(results => {
           store.dispatch(resetSearchDataSent())
           return store.dispatch(receiveSearchResults(results))
-        }, error => store.dispatch(reportServerError(error)))
-        .catch(error => store.dispatch(reportServerError(error)))
+        }, handleError)
+        .catch(handleError)
       break
     case "ADD_LOCATION_TO_USER":
       store.dispatch(addLocationSent())
@@ -152,8 +148,8 @@ export const dataService = store => next => action => {
         .then(response => {
           store.dispatch(resetAddLocationSent())
           return store.dispatch(confirmAddLocation(response, 1))
-        }, error => store.dispatch(reportServerError(error)))
-        .catch(error => store.dispatch(reportServerError(error)))
+        }, handleError)
+        .catch(handleError)
       break
     case "REMOVE_LOCATION_FROM_USER":
       store.dispatch(removeLocationSent())
@@ -163,18 +159,10 @@ export const dataService = store => next => action => {
         .then(response => {
           store.dispatch(resetRemoveLocationSent())
           return store.dispatch(confirmRemoveLocation(response, -1))
-        }, error => store.dispatch(reportServerError(error)))
-        .catch(error => store.dispatch(reportServerError(error)))
+        }, handleError)
+        .catch(handleError)
       break
     default:
      break
-  }
-}
-
-function handleResponse(response){
-  if(response.ok) {
-    return response.json()
-  } else {
-    throw {status: response.status, message: response.statusText}
   }
 }

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import store from '../store/store'
 import { signup } from '../actions/actions'
 import { Link } from 'react-router'
+import PasswordForm from '../components/PasswordForm.jsx'
 
 class Signup extends Component {
   constructor(props) {

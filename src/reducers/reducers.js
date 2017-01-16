@@ -36,10 +36,9 @@ const initialUIData = {
 function userReducer(state=initialUserData, action) {
   switch (action.type) {
     case "RECEIVE_USER_DATA":
-      return { ...state, ...action.payload.user, loggedIn: true }
     case "CONFIRM_ADD_LOCATION":
     case "CONFIRM_REMOVE_LOCATION":
-      return { ...state, plans: action.payload }
+      return { ...state, ...action.payload.user, loggedIn: true }
     case "LOGOUT":
       return { ...initialUserData }
     case "SET_COORDINATES":

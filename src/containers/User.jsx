@@ -1,13 +1,13 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import { browserHistory } from 'react-router'
-import UserForm from '../components/UserForm.jsx'
 import UserPlans from '../components/UserPlans.jsx'
-import UserDisplay from '../components/UserDisplay.jsx'
-import UserPassword from '../components/UserPassword.jsx'
+import UserPasswordEdit from '../components/UserPasswordEdit.jsx'
+import UserInfoEdit from '../components/UserInfoEdit.jsx'
+import ConfirmationButton from '../components/ConfirmationButton.jsx'
 
 import store from '../store/store.js'
-import * as actions from '../actions/actions.js'
+import * as Actions from '../actions/actions.js'
 
 class User extends Component {
 
@@ -21,12 +21,17 @@ class User extends Component {
       }
     }
 
-    logout() {
-      store.dispatch(actions.clearUserData())
-      store.dispatch(actions.logout())
+    invalidPassword(event) {
+      console.log("Password sucks!")
     }
 
-    saveInfo() {
+    logout() {
+      store.dispatch(Actions.clearUserData())
+      store.dispatch(Actions.logout())
+    }
+
+    saveInfo(event) {
+      event.preventDefault()
       const updatedInfo = JSON.stringify({
         update: {
           username: this.state.newUsername || this.props.user.username,
@@ -37,23 +42,25 @@ class User extends Component {
         updatedInfo: updatedInfo,
         id: this.props.user.id
       }
-      console.log(updateObj)
-      store.dispatch(actions.updateUserProfile(updateObj))
-      store.dispatch(actions.turnOffEditMode())
+      store.dispatch(Actions.updateUserProfile(updateObj))
+      store.dispatch(Actions.turnOffEditMode())
     }
 
     editInfo() {
-      store.dispatch(actions.turnOnEditMode())
+      store.dispatch(Actions.turnOnEditMode())
     }
 
     cancelInfo() {
-      store.dispatch(actions.turnOffEditMode())
+      this.setState({
+        newUsername: "",
+        newEmail: ""
+      })
+      store.dispatch(Actions.turnOffEditMode())
     }
 
-    savePassword() {
-      if(this.state.newPassword !== this.state.newPasswordConfirmation) {
-        return
-      }
+    savePassword(event) {
+      event.preventDefault()
+      console.log(event.target)
       const updatedInfo = JSON.stringify({
         update: {
           password: this.state.newPassword,
@@ -64,16 +71,20 @@ class User extends Component {
         updatedInfo: updatedInfo,
         id: this.props.user.id
       }
-      store.dispatch(actions.updateUserProfile(updateObj))
-      store.dispatch(actions.turnOffPasswordEditMode())
+      // store.dispatch(Actions.updateUserProfile(updateObj))
+      // store.dispatch(Actions.turnOffPasswordEditMode())
     }
 
     editPassword() {
-      store.dispatch(actions.turnOnPasswordEditMode())
+      store.dispatch(Actions.turnOnPasswordEditMode())
     }
 
     cancelPassword() {
-      store.dispatch(actions.turnOffPasswordEditMode())
+      this.setState({
+        newPassword: "",
+        newPasswordConfirmation: ""
+      })
+      store.dispatch(Actions.turnOffPasswordEditMode())
     }
 
     updateUsername(event) {
@@ -101,7 +112,7 @@ class User extends Component {
     }
 
     sendUserConfirmation() {
-      store.dispatch(actions.sendUserConfirmation())
+      store.dispatch(Actions.sendUserConfirmation(this.props.user.id))
     }
 
     componentWillMount() {
@@ -117,17 +128,11 @@ class User extends Component {
       return(
         <section className="container">
           <h1>User Info</h1>
-          { this.props.ui.editMode ? <UserForm user={this.props.user} updateUsername={this.updateUsername.bind(this)} updateEmail={this.updateEmail.bind(this) } /> : <UserDisplay user={this.props.user}  /> }
-          { this.props.ui.editMode ? <div><button type="button" className="btn btn-success" onClick={this.saveInfo.bind(this)}>Save</button><button type="button" className="btn btn-danger" onClick={this.cancelInfo.bind(this)}>Cancel</button></div> : <button type="button" className="btn btn-default" onClick={this.editInfo}>Edit</button>}
-          <UserPassword
-              passwordEditMode={this.props.ui.passwordEditMode}
-              enableEdit={this.editPassword.bind(this)}
-              stopEdit={this.savePassword.bind(this)}
-              cancelEdit={this.cancelPassword.bind(this)}
-              updatePassword={this.updatePassword.bind(this)}
-              updatePasswordConfirmation={this.updatePasswordConfirmation.bind(this)}
-              />
+          <UserInfoEdit editMode={this.props.ui.editMode} editInfo={this.editInfo.bind(this)} user={this.props.user}/>
+
           { this.props.ui.userConfirmed ? null : <button className="btn btn-warning" onClick={this.sendUserConfirmation.bind(this)}>Send new confirmation</button>}
+          <UserPasswordEdit editPasswordMode={this.props.ui.passwordEditMode}
+              enableEdit={this.editPassword.bind(this)} />
           <UserPlans user={this.props.user} />
           <button type="button" className="btn btn-danger" onClick={this.logout.bind(this)}>Logout</button>
         </section>

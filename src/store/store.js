@@ -1,7 +1,9 @@
 import { applyMiddleware, createStore } from 'redux'
 import rootReducer from '../reducers/reducers'
 import reduxThunk from 'redux-thunk'
-import { dataService } from '../middleware/dataServiceMiddleware'
+import { locationService } from '../middleware/locationMiddleware'
+import { userService } from '../middleware/userDataMiddleware'
+import { searchData } from '../middleware/searchDataMiddleware'
 import { userStorage } from '../middleware/userStorageMiddleware'
 
 const userDataFromBrowserStorage = {
@@ -38,6 +40,6 @@ const initialData = {
   }
 }
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-const middleware = composeEnhancers(applyMiddleware(userStorage, dataService, reduxThunk))
+const middleware = composeEnhancers(applyMiddleware(userStorage, locationService, searchData, userService, reduxThunk))
 
 export default createStore(rootReducer, {...initialData, user: userDataFromBrowserStorage}, middleware)

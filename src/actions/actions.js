@@ -47,7 +47,7 @@ export const reportLocalStorageError = error => ({ type: "LOCAL_STORAGE_ERROR", 
 ****************************/
 
 export const sendResetPassword = () => ({ type: "SEND_RESET_PASSWORD" })
-export const sendUserConfirmation = () => ({ type: "SEND_USER_CONFIRMATION" })
+export const sendUserConfirmation = id => ({ type: "SEND_USER_CONFIRMATION", payload: id })
 export const confirmUser = () => ({ type: "CONFIRM_USER" })
 export const login = credentials => ({ type: "LOGIN", payload: credentials })
 export const signup = credentials => ({ type: "SIGNUP", payload: credentials })
@@ -66,6 +66,7 @@ export const receivedUserDataAfterRequest = userData => {
   browserHistory.push('/search')
   return { type: "RECEIVE_USER_DATA", payload: userData}
 }
+export const receivedUserDataAfterUpdate = userData => ({ type: "RECEIVE_USER_DATA", payload: userData})
 export const reportServerError = error => {
   console.error(`Error reported: ${error}`)
   return { type: "REPORT_SERVER_ERROR", payload: error}
