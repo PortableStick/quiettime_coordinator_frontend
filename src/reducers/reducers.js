@@ -30,7 +30,8 @@ const initialUIData = {
    passwordEditMode: false,
    isUsingGeolocation: false,
    error: null,
-   localStorageError: null
+   localStorageError: null,
+   showLogoutModal: false
  }
 
 function userReducer(state=initialUserData, action) {
@@ -117,7 +118,11 @@ function uiReducer(state=initialUIData, action) {
     case "TURN_OFF_PASSWORD_EDIT_MODE":
       return { ...state, passwordEditMode: false }
     case "ENABLE_GEOLOCATION":
-      return { ...state, isUsingGeolocation: true}
+      return { ...state, isUsingGeolocation: true }
+    case "CONFIRM_USER_LOGOUT":
+      return { ...state, showLogoutModal: true }
+    case "END_USER_LOGOUT":
+      return { ...state, showLogoutModal: false }
     case "CONFIRM_ADD_LOCATION":
     case "REQUEST_RECEIVED_BY_SERVER":
     default:

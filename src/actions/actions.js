@@ -2,7 +2,8 @@ import { browserHistory } from 'react-router'
 /****************************
 *     UI Changes            *
 ****************************/
-
+export const confirmUserLogout = () => ({ type: "CONFIRM_USER_LOGOUT" })
+export const endUserLogout = () => ({ type: "END_USER_LOGOUT" })
 export const passwordResetSent = () => ({ type: "PASSWORD_RESET_SENT" })
 export const newPasswordSent = () => ({ type: "NEW_PASSWORD_SENT" })
 export const newUserConfirmationSent = () => ({ type: "USER_CONFIRMATION_REQUESTED" })
