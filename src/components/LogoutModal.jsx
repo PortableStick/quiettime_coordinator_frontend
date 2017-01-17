@@ -1,6 +1,6 @@
 import React from 'react'
 import Modal from 'react-modal'
-import SaveButton from './SaveButton.jsx'
+import PrimaryButton from './PrimaryButton.jsx'
 import CancelButton from './CancelButton.jsx'
 import '../scss/logout-modal.scss'
 

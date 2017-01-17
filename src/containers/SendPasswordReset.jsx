@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router'
 import store from '../store/store'
 import { requestPasswordReset } from '../actions/actions'
-import SaveButton from '../components/SaveButton.jsx'
+import PrimaryButton from '../components/PrimaryButton.jsx'
 import CancelButton from '../components/CancelButton.jsx'
 
 class PasswordReset extends Component {
@@ -39,7 +39,7 @@ class PasswordReset extends Component {
             Enter your email:
             </label>
             <input type="text" className={`form-control`} id="login-username" onChange={this.updateEmail.bind(this)}/>
-            <SaveButton save={this.sendReset.bind(this)}>Reset Password</SaveButton>
+            <PrimaryButton onClick={this.sendReset.bind(this)}>Reset Password</PrimaryButton>
             <CancelButton cancel={this.cancelReset.bind(this)}/>
           </div>
         </form>

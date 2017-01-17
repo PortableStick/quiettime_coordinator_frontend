@@ -3,7 +3,7 @@ import { addLocationToUser, removeLocationFromUser, addLocationSent, removeLocat
 import store from '../store/store'
 import DefaultButton from './DefaultButton.jsx'
 import ConfirmationButton from './ConfirmationButton.jsx'
-import SaveButton from './SaveButton.jsx'
+import PrimaryButton from './PrimaryButton.jsx'
 
 export default props => {
   if(props.isLoggedIn) {
@@ -12,7 +12,7 @@ export default props => {
         {
         props.userGoing
           ?
-        <SaveButton class="attending-btn" save={props.removeAttending} >Attending</SaveButton>
+        <PrimaryButton class="attending-btn" onClick={props.removeAttending} >Attending</PrimaryButton>
           :
         <DefaultButton onClick={props.setAttending}>Attend</DefaultButton>
       }

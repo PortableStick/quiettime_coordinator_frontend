@@ -4,7 +4,7 @@ import { signup } from '../actions/actions'
 import { Link } from 'react-router'
 import PasswordForm from '../components/PasswordForm.jsx'
 import UserInfoForm from '../components/UserInfoForm.jsx'
-import SaveButton from '../components/SaveButton.jsx'
+import PrimaryButton from '../components/PrimaryButton.jsx'
 import CancelButton from '../components/CancelButton.jsx'
 
 class Signup extends Component {
@@ -145,7 +145,7 @@ class Signup extends Component {
                       passwordValue={this.state.passwordValue}
                       passwordConfirmationValue={this.state.passwordConfirmationValue}
                       />
-          <SaveButton save={this.submitSignup.bind(this)}>Signup</SaveButton>
+          <PrimaryButton onClick={this.submitSignup.bind(this)}>Signup</PrimaryButton>
           <CancelButton cancel={this.cancelSignup.bind(this)}/>
       </section>
     )

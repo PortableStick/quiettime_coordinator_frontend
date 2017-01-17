@@ -4,13 +4,18 @@ import RootRouter from './RootRouter'
 import { Provider } from 'react-redux'
 import store from './store/store'
 
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import injectTapEventPlugin from 'react-tap-event-plugin'
 import '../node_modules/bootstrap/less/bootstrap.less'
 import './scss/main.scss'
 
 window.onload = () => {
+  injectTapEventPlugin()
   render(
-    <Provider store={store}>
-      <RootRouter />
-    </Provider>
+    <MuiThemeProvider>
+      <Provider store={store}>
+        <RootRouter />
+      </Provider>
+    </MuiThemeProvider>
     , document.getElementById('app'))
 }

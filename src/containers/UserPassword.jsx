@@ -4,7 +4,7 @@ import store from '../store/store'
 import { turnOffPasswordEditMode, updateUserProfile } from '../actions/actions'
 import { connect } from 'react-redux'
 import CancelButton from '../components/CancelButton.jsx'
-import SaveButton from '../components/SaveButton.jsx'
+import PrimaryButton from '../components/PrimaryButton.jsx'
 class UserPassword extends Component {
 
   constructor(props) {
@@ -85,7 +85,7 @@ class UserPassword extends Component {
                       passwordValue={this.state.passwordValue}
                       passwordConfirmationValue={this.state.passwordConfirmationValue}
         />
-          <SaveButton save={this.sendPasswords.bind(this)} >Save</SaveButton>
+          <PrimaryButton onClick={this.sendPasswords.bind(this)} >Save</PrimaryButton>
           <CancelButton destination="/me" cancel={this.cancelEdit.bind(this)} >Cancel</CancelButton>
       </form>
     </div>)

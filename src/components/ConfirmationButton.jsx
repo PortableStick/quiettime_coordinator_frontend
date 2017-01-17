@@ -1,3 +1,4 @@
 import React from 'react'
+import RaisedButton from 'material-ui/RaisedButton'
 
-export default props => <button className="btn btn-warning" onClick={props.confirmation}>{props.children}</button>
+export default props => <RaisedButton onClick={props.confirmation}>{props.children}</RaisedButton>

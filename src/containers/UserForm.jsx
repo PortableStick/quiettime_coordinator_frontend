@@ -3,7 +3,7 @@ import UserInfoForm from '../components/UserInfoForm.jsx'
 import store from '../store/store'
 import { connect } from 'react-redux'
 import { updateUserProfile, turnOffEditMode } from '../actions/actions'
-import SaveButton from '../components/SaveButton.jsx'
+import PrimaryButton from '../components/PrimaryButton.jsx'
 import CancelButton from '../components/CancelButton.jsx'
 
 class UserForm extends Component {
@@ -81,7 +81,7 @@ class UserForm extends Component {
                     usernameError={this.state.usernameError}
                     emailError={this.state.emailError}/>
       <div className="form-group">
-        <SaveButton save={this.saveInfo.bind(this)}>Save</SaveButton>
+        <PrimaryButton onClick={this.saveInfo.bind(this)}>Save</PrimaryButton>
         <CancelButton destination="/me" cancel={this.cancelInfo.bind(this)} />
       </div>
     </form>

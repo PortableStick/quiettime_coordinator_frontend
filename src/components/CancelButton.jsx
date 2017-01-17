@@ -1,4 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router'
+import RaisedButton from 'material-ui/RaisedButton'
 
-export default props => <Link to={props.destination || "/"} className="btn btn-danger btn-lg" onClick={props.cancel}>{props.children || "Cancel"}</Link>
+export default props => <RaisedButton secondary={true} containerElement={<Link to={props.destination || "/"} />} onClick={props.cancel}>{props.children || "Cancel"}</RaisedButton>
+

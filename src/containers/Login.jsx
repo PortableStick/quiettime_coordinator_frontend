@@ -6,7 +6,7 @@ import store from '../store/store'
 import UserInfoForm from '../components/UserInfoForm.jsx'
 import PasswordForm from '../components/PasswordForm.jsx'
 import CancelButton from '../components/CancelButton.jsx'
-import SubmitButton from '../components/SubmitButton.jsx'
+import PrimaryButton from '../components/PrimaryButton.jsx'
 import ForgottenPasswordButton from '../components/ForgottenPasswordButton.jsx'
 import '../scss/login.scss'
 
@@ -98,7 +98,7 @@ class Login extends Component {
                     passwordOnly={true}
                     passwordError={this.state.passwordError}
                     />
-        <SubmitButton click={this.sendLogin.bind(this)}>Log In</SubmitButton>
+        <PrimaryButton onClick={this.sendLogin.bind(this)}>Log In</PrimaryButton>
         <CancelButton cancel={this.cancelLogin.bind(this)} />
         <ForgottenPasswordButton>I Forgot My Password</ForgottenPasswordButton>
       </section>
