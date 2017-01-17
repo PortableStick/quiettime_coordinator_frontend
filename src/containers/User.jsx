@@ -22,94 +22,17 @@ class User extends Component {
       }
     }
 
-    invalidPassword(event) {
-      console.log("Password sucks!")
-    }
-
     logout() {
       store.dispatch(Actions.clearUserData())
       store.dispatch(Actions.logout())
-    }
-
-    saveInfo(event) {
-      event.preventDefault()
-      const updatedInfo = JSON.stringify({
-        update: {
-          username: this.state.newUsername || this.props.user.username,
-          email: this.state.newEmail || this.props.user.email
-        }
-      })
-      const updateObj = {
-        updatedInfo: updatedInfo,
-        id: this.props.user.id
-      }
-      store.dispatch(Actions.updateUserProfile(updateObj))
-      store.dispatch(Actions.turnOffEditMode())
     }
 
     editInfo() {
       store.dispatch(Actions.turnOnEditMode())
     }
 
-    cancelInfo() {
-      this.setState({
-        newUsername: "",
-        newEmail: ""
-      })
-      store.dispatch(Actions.turnOffEditMode())
-    }
-
-    savePassword(event) {
-      event.preventDefault()
-      console.log(event.target)
-      const updatedInfo = JSON.stringify({
-        update: {
-          password: this.state.newPassword,
-          password_confirmation: this.state.newPasswordConfirmation
-        }
-      })
-      const updateObj = {
-        updatedInfo: updatedInfo,
-        id: this.props.user.id
-      }
-      // store.dispatch(Actions.updateUserProfile(updateObj))
-      // store.dispatch(Actions.turnOffPasswordEditMode())
-    }
-
     editPassword() {
       store.dispatch(Actions.turnOnPasswordEditMode())
-    }
-
-    cancelPassword() {
-      this.setState({
-        newPassword: "",
-        newPasswordConfirmation: ""
-      })
-      store.dispatch(Actions.turnOffPasswordEditMode())
-    }
-
-    updateUsername(event) {
-      this.setState({
-        newUsername: event.target.value
-      })
-    }
-
-    updateEmail(event) {
-      this.setState({
-        newEmail: event.target.value
-      })
-    }
-
-    updatePassword(event) {
-      this.setState({
-        newPassword: event.target.value
-      })
-    }
-
-    updatePasswordConfirmation(event) {
-      this.setState({
-        newPasswordConfirmation: event.target.value
-      })
     }
 
     sendUserConfirmation() {
