@@ -3,72 +3,109 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { login, requestPasswordReset } from '../actions/actions'
 import store from '../store/store'
+import UserInfoForm from '../components/UserInfoForm.jsx'
+import PasswordForm from '../components/PasswordForm.jsx'
+
 import '../scss/login.scss'
 
 class Login extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      searchinfo: "",
-      password: ""
+      usernameValue: "",
+      passwordValue: "",
+      usernameError: "",
+      passwordError: ""
     }
   }
 
-  updateSearchinfo(event) {
+  updateUsername(event) {
     this.setState({
-      searchinfo: event.target.value
+      usernameValue: event.target.value
     })
   }
 
   updatePassword(event) {
     this.setState({
-      password: event.target.value
+      passwordValue: event.target.value
     })
+  }
+
+  cancelLogin() {
+    this.setState({
+      usernameValue: '',
+      passwordValue: ''
+    })
+  }
+
+  validateUsername() {
+    this.setState({
+        usernameError: ""
+      })
+    if(this.state.usernameValue.length === 0) {
+      this.setState({
+        usernameError: "Username is required"
+      })
+      return false
+    }
+    return true
+  }
+  validatePassword() {
+    this.setState({
+        passwordError: ""
+      })
+    if(this.state.passwordValue.length === 0) {
+      this.setState({
+        passwordError: "Password is required"
+      })
+      return false
+    }
+    return true
+  }
+
+  formIsValid() {
+    return (this.state.passwordError.length === 0 && this.state.usernameError.length === 0)
   }
 
   sendLogin(event) {
     event.preventDefault()
-    const loginObject = {
-      auth: {
-        password: this.state.password,
-        searchinfo: this.state.searchinfo
-      }
+    if(this.validateUsername() && this.validatePassword()) {
+      const loginObject = JSON.stringify({
+        auth: {
+          password: this.state.passwordValue,
+          searchinfo: this.state.usernameValue
+        }
+      })
+      store.dispatch(login(loginObject))
     }
-    store.dispatch(login(JSON.stringify(loginObject)))
   }
 
   render() {
-    const errorClass = this.props.ui.error ? "error" : ""
-    const errorMessage = (this.props.ui.error && this.props.ui.error.status === 401) ?
-                          <div className="error">Invalid username or password</div>
-                          :
-                          <div className="error">{"" && this.props.ui.error.message}</div>
-
     return(
       <section className="container">
-        <form>
-          <div className="form-group">
-            <label htmlFor="login-username">Username or email: </label>
-            <input type="text" className={`form-control ${errorClass}`} id="login-username" ref={input => this.userName = input} onChange={this.updateSearchinfo.bind(this)}/>
-          </div>
-          <div className="form-group">
-            <label htmlFor="login-password">Password</label>
-            <input type="password" className={`form-control ${errorClass}`} id="login-password" ref={input => this.password = input} onChange={this.updatePassword.bind(this)}/>
-          </div>
-          <button type="submit" className="btn btn-success btn-lg" onClick={this.sendLogin.bind(this)}>Log In</button>
-          <Link to="/" className="btn btn-danger btn-lg">Cancel</Link>
-          <Link to="/reset" className="btn btn-primary btn-lg">I Forgot My Password</Link>
-        </form>
-        {errorMessage}
+        <UserInfoForm label="signupform"
+                    usernameLabel="Username or Email"
+                    username={this.state.usernameValue}
+                    updateUsername={this.updateUsername.bind(this)}
+                    usernameOnly={true}
+                    usernameError={this.state.usernameError}
+                    />
+        <PasswordForm label="password-reset"
+                    passwordUpdate={this.updatePassword.bind(this)}
+                    passwordValue={this.state.passwordValue}
+                    passwordOnly={true}
+                    passwordError={this.state.passwordError}
+                    />
+        <button type="submit" className="btn btn-success btn-lg" onClick={this.sendLogin.bind(this)}>Log In</button>
+        <Link to="/" className="btn btn-danger btn-lg" onClick={this.cancelLogin.bind(this)}>Cancel</Link>
+        <Link to="/reset" className="btn btn-primary btn-lg">I Forgot My Password</Link>
       </section>
     )
   }
 }
 
 const mapStateToProps = state => ({
-  user: state.user,
-  ui: state.ui,
-  searches: state.searches
+  ui: state.ui
 })
 
 export default connect(mapStateToProps)(Login)

@@ -3,116 +3,104 @@ import store from '../store/store'
 import { signup } from '../actions/actions'
 import { Link } from 'react-router'
 import PasswordForm from '../components/PasswordForm.jsx'
+import UserInfoForm from '../components/UserInfoForm.jsx'
 
 class Signup extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      username: "",
-      email: "",
-      password: "",
-      passwordConfirmation: "",
-      usernameError: false,
-      emailError: false,
-      passwordError: false
+      usernameValue: "",
+      emailValue: "",
+      passwordValue: "",
+      passwordConfirmationValue: "",
+      usernameError: '',
+      emailError: '',
+      passwordError: ''
     }
   }
 
-  validateUsername(event) {
-    if(this.state.username.length > 0) {
-      this.passwordInput.setCustomValidity("")
-      this.setState({
-        usernameError: false,
+  validateUsername() {
+    this.setState({
+        usernameError: '',
       })
-    } else {
-      this.usernameInput.setCustomValidity("Username is required")
+    if(this.state.usernameValue.length === 0) {
       this.setState({
-        usernameError: true,
+        usernameError: 'Username is required',
       })
     }
   }
 
-  validateEmail(event) {
-    if(this.state.email.length === 0) {
-      this.emailInput.setCustomValidity("Email is required")
-      this.setState({
-        emailError: true
+  validateEmail() {
+    this.setState({
+        emailError: ''
       })
-    } else if(!this.state.email.match(/[\w\+\.]+\@\w{3,}\.\w+/)) {
-      this.emailInput.setCustomValidity("Not a valid email address (name@domain.com)")
+    if(this.state.emailValue.length === 0) {
       this.setState({
-        emailError: true
+        emailError: 'Email is required'
       })
-    } else {
-      this.passwordInput.setCustomValidity("")
+    } else if(!this.state.emailValue.match(/[\w\+\.]+\@\w{3,}\.\w+/)) {
       this.setState({
-        emailError: false
+        emailError: 'Email is not in correct format (email@domain.com, email.address@domain.com, email+alias@domain.com)'
       })
     }
   }
 
   validatePasswords(event) {
-    if(this.state.password.length === 0) {
-      this.passwordInput.setCustomValidity("Password is required")
-      this.setState({
-        passwordError: false
+    this.setState({
+        passwordError: ''
       })
-    } else if(this.state.password.length < 8) {
-      this.passwordInput.setCustomValidity("Password must be at least 8 characters")
+    if(this.state.passwordValue.length === 0) {
       this.setState({
-        passwordError: false
+        passwordError: 'Password is required'
       })
-    } else if(this.state.password !== this.state.passwordConfirmation) {
-      this.passwordInput.setCustomValidity("Passwords must match")
+    } else if(this.state.passwordValue.length < 8) {
       this.setState({
-        passwordError: true
+        passwordError: 'Password must be at least 8 characters'
       })
-    } else {
-      this.passwordInput.setCustomValidity("")
+    } else if(this.state.passwordValue !== this.state.passwordConfirmationValue) {
       this.setState({
-        passwordError: false
+        passwordError: 'Passwords must match'
       })
     }
   }
 
   updateUsername(event) {
     this.setState({
-      username: event.target.value
+      usernameValue: event.target.value
     })
   }
 
-  updateUserEmail(event) {
+  updateEmail(event) {
     this.setState({
-      email: event.target.value
+      emailValue: event.target.value
     })
   }
 
   updateUserPassword(event) {
     this.setState({
-      password: event.target.value
+      passwordValue: event.target.value
     })
   }
 
   updateUserPasswordConfirmation(event) {
     this.setState({
-      passwordConfirmation: event.target.value
+      passwordConfirmationValue: event.target.value
     })
   }
 
   formIsValid() {
-    return !(this.state.usernameError && this.state.passwordError && this.state.emailError)
+    return this.state.usernameError === '' && this.state.passwordError  === '' && this.state.emailError === ''
   }
 
-  resetState() {
+  cancelSignup() {
     this.setState({
-      username: "",
-      email: "",
-      password: "",
-      passwordConfirmation: "",
-      validation: false,
-      usernameError: false,
-      emailError: false,
-      passwordError: false
+      usernameValue: "",
+      emailValue: "",
+      passwordValue: "",
+      passwordConfirmationValue: "",
+      usernameError: '',
+      emailError: '',
+      passwordError: ''
     })
   }
 
@@ -124,10 +112,10 @@ class Signup extends Component {
     if(this.formIsValid()) {
       const signupObj = JSON.stringify({
         user: {
-          username: this.state.username,
-          email: this.state.email,
-          password: this.state.password,
-          password_confirmation: this.state.passwordConfirmation
+          username: this.state.usernameValue,
+          email: this.state.emailValue,
+          password: this.state.passwordValue,
+          password_confirmation: this.state.passwordConfirmationValue
         }
       })
       store.dispatch(signup(signupObj))
@@ -137,24 +125,26 @@ class Signup extends Component {
   render() {
     return(
       <section className="container">
-        <form onSubmit={this.submitSignup.bind(this)}>
-          <div className="form-group">
-            <label htmlFor="signup-username">Username: </label>
-            <input type="text" className={"form-control" + (this.state.usernameError ?" error" : '')}  id="signup-username" onChange={this.updateUsername.bind(this)} ref={input => this.usernameInput = input }/>
-          </div>
-          <div className="form-group">
-            <label htmlFor="signup-email">Email: </label>
-            <input type="email" className={"form-control" + (this.state.emailError ?" error" : '')} id="signup-email" onChange={this.updateUserEmail.bind(this)} onBlur={this.validateEmail.bind(this)} ref={input => this.emailInput = input }/>
-          </div>
-          <div className="form-group">
-            <label htmlFor="signup-password">Password</label>
-            <input type="password" className={"form-control" + (this.state.passwordError ?" error" : '')} id="signup-password" onChange={this.updateUserPassword.bind(this)} onBlur={this.validatePasswords.bind(this)} ref={input => this.passwordInput = input }/>
-            <label htmlFor="signup-confirmation">Password Confirmation</label>
-            <input type="password" className={"form-control" + (this.state.passwordError ? " error" : '')} id="signup-confirmation" onChange={this.updateUserPasswordConfirmation.bind(this)} onBlur={this.validatePasswords.bind(this)} ref={input => this.passwordConfirmationInput = input } />
-          </div>
-          <button type="submit" className="btn btn-success btn-lg">Signup</button>
-          <Link to="/" onClick={this.resetState.bind(this)} className="btn btn-danger btn-lg">Cancel</Link>
-        </form>
+          <UserInfoForm label="signupform"
+                    username={this.state.usernameValue}
+                    email={this.state.emailValue}
+                    validateUsername={this.validateUsername.bind(this)}
+                    validateEmail={this.validateEmail.bind(this)}
+                    updateUsername={this.updateUsername.bind(this)}
+                    updateEmail={this.updateEmail.bind(this)}
+                    usernameError={this.state.usernameError}
+                    emailError={this.state.emailError}
+                    />
+          <PasswordForm label="password-reset"
+                      passwordUpdate={this.updateUserPassword.bind(this)}
+                      passwordConfirmationUpdate={this.updateUserPasswordConfirmation.bind(this)}
+                      passwordError={this.state.passwordError}
+                      validatePasswords={this.validatePasswords.bind(this)}
+                      passwordValue={this.state.passwordValue}
+                      passwordConfirmationValue={this.state.passwordConfirmationValue}
+                      />
+          <button type="submit" className="btn btn-success btn-lg" onClick={this.submitSignup.bind(this)}>Signup</button>
+          <Link to="/" onClick={this.cancelSignup.bind(this)} className="btn btn-danger btn-lg">Cancel</Link>
       </section>
     )
   }
