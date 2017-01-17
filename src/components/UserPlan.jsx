@@ -10,8 +10,8 @@ import IconButton from 'material-ui/IconButton'
 export default props =>
     <li className="userplan">
       <Card>
-        <CardHeader title={props.plan.replace(/\-/g,' ')}
-                  subtitle={<a href={`https://yelp.com/biz/${props.plan}`}/>} target="_blank"
+        <CardHeader title={<h3>{props.plan.replace(/\-/g,' ')}</h3>}
+                  subtitle={<a href={`https://yelp.com/biz/${props.plan}`}>Yelp Link</a>} target="_blank"
                   />
         <CardActions>
           <IconButton tooltip="Remove plan" touch={true} onClick={props.removeAttending.bind(null, props.plan)}><DeleteForever /></IconButton>

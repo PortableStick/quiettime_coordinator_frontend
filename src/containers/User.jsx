@@ -13,6 +13,8 @@ import * as Actions from '../actions/actions.js'
 import LogoutModal from '../components/LogoutModal.jsx'
 import CancelButton from '../components/CancelButton.jsx'
 
+import '../scss/user.scss'
+
 class User extends Component {
 
     constructor(props) {
@@ -70,9 +72,6 @@ class User extends Component {
     }
 
     render() {
-      // if(this.props.ui.error) {
-      //   console.error(this.props.ui.error)
-      // }
       return(
         <section className="container">
           <h1>Profile</h1>

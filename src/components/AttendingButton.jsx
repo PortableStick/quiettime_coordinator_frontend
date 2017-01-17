@@ -8,16 +8,11 @@ import PrimaryButton from './PrimaryButton.jsx'
 export default props => {
   if(props.isLoggedIn) {
     return (
-      <div className="col-xs-3">
-        {
         props.userGoing
           ?
         <PrimaryButton class="attending-btn" onClick={props.removeAttending} >Attending</PrimaryButton>
           :
         <DefaultButton onClick={props.setAttending}>Attend</DefaultButton>
-      }
-        <div>{props.attending} attending</div>
-      </div>
     )
   } else {
     return (<ConfirmationButton >Log in to participate</ConfirmationButton>)

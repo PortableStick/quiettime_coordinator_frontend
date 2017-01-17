@@ -5,6 +5,8 @@ import SearchResult from '../components/SearchResult.jsx'
 import * as Actions from '../actions/actions'
 import store from '../store/store'
 
+import '../scss/search.scss'
+
 class Search extends Component {
 
     constructor(props) {
@@ -113,7 +115,9 @@ class Search extends Component {
                   submitSearch={this.submitSearch.bind(this)}
                   updateSearchEntry={this.updateSearchEntry.bind(this)}
                   />
-        {results}
+        <ul>
+          {results}
+        </ul>
       </section>)
     }
 }
