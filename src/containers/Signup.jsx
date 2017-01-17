@@ -4,6 +4,8 @@ import { signup } from '../actions/actions'
 import { Link } from 'react-router'
 import PasswordForm from '../components/PasswordForm.jsx'
 import UserInfoForm from '../components/UserInfoForm.jsx'
+import SaveButton from '../components/SaveButton.jsx'
+import CancelButton from '../components/CancelButton.jsx'
 
 class Signup extends Component {
   constructor(props) {
@@ -143,8 +145,8 @@ class Signup extends Component {
                       passwordValue={this.state.passwordValue}
                       passwordConfirmationValue={this.state.passwordConfirmationValue}
                       />
-          <button type="submit" className="btn btn-success btn-lg" onClick={this.submitSignup.bind(this)}>Signup</button>
-          <Link to="/" onClick={this.cancelSignup.bind(this)} className="btn btn-danger btn-lg">Cancel</Link>
+          <SaveButton save={this.submitSignup.bind(this)}>Signup</SaveButton>
+          <CancelButton cancel={this.cancelSignup.bind(this)}/>
       </section>
     )
   }

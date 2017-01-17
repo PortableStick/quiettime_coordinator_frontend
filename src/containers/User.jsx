@@ -2,12 +2,13 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import { browserHistory } from 'react-router'
 import UserPlans from '../components/UserPlans.jsx'
-import UserPasswordEdit from '../components/UserPasswordEdit.jsx'
-import UserInfoEdit from '../components/UserInfoEdit.jsx'
+import UserPasswordEditSwitch from '../components/UserPasswordEditSwitch.jsx'
+import UserInfoEditSwitch from '../components/UserInfoEditSwitch.jsx'
 import ConfirmationButton from '../components/ConfirmationButton.jsx'
 
 import store from '../store/store.js'
 import * as Actions from '../actions/actions.js'
+import CancelButton from '../components/CancelButton.jsx'
 
 class User extends Component {
 
@@ -128,13 +129,13 @@ class User extends Component {
       return(
         <section className="container">
           <h1>User Info</h1>
-          <UserInfoEdit editMode={this.props.ui.editMode} editInfo={this.editInfo.bind(this)} user={this.props.user}/>
+          <UserInfoEditSwitch editMode={this.props.ui.editMode} editInfo={this.editInfo.bind(this)} user={this.props.user}/>
 
-          { this.props.ui.userConfirmed ? null : <button className="btn btn-warning" onClick={this.sendUserConfirmation.bind(this)}>Send new confirmation</button>}
-          <UserPasswordEdit editPasswordMode={this.props.ui.passwordEditMode}
+          { this.props.ui.userConfirmed ? null : <ConfirmationButton confirmation={this.sendUserConfirmation.bind(this)}>Send new confirmation</ConfirmationButton>}
+          <UserPasswordEditSwitch editPasswordMode={this.props.ui.passwordEditMode}
               enableEdit={this.editPassword.bind(this)} />
           <UserPlans user={this.props.user} />
-          <button type="button" className="btn btn-danger" onClick={this.logout.bind(this)}>Logout</button>
+          <CancelButton cancel={this.logout.bind(this)}>Logout</CancelButton>
         </section>
       )
     }

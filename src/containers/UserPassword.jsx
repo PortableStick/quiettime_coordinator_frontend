@@ -3,7 +3,8 @@ import PasswordForm from '../components/PasswordForm.jsx'
 import store from '../store/store'
 import { turnOffPasswordEditMode, updateUserProfile } from '../actions/actions'
 import { connect } from 'react-redux'
-
+import CancelButton from '../components/CancelButton.jsx'
+import SaveButton from '../components/SaveButton.jsx'
 class UserPassword extends Component {
 
   constructor(props) {
@@ -75,7 +76,7 @@ class UserPassword extends Component {
 
   render() {
     return (<div>
-      <form className="form-inline" onSubmit={this.sendPasswords.bind(this)}>
+      <form className="form-inline">
         <PasswordForm label="password-reset"
                       passwordUpdate={this.updateUserPassword.bind(this)}
                       passwordConfirmationUpdate={this.updateUserPasswordConfirmation.bind(this)}
@@ -84,8 +85,8 @@ class UserPassword extends Component {
                       passwordValue={this.state.passwordValue}
                       passwordConfirmationValue={this.state.passwordConfirmationValue}
         />
-          <button type="submit" className="btn btn-success" >Save</button>
-          <button type="button" className="btn btn-danger" onClick={this.cancelEdit.bind(this)} >Cancel</button>
+          <SaveButton save={this.sendPasswords.bind(this)} >Save</SaveButton>
+          <CancelButton destination="/me" cancel={this.cancelEdit.bind(this)} >Cancel</CancelButton>
       </form>
     </div>)
   }

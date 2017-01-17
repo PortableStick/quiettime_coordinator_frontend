@@ -5,7 +5,9 @@ import { login, requestPasswordReset } from '../actions/actions'
 import store from '../store/store'
 import UserInfoForm from '../components/UserInfoForm.jsx'
 import PasswordForm from '../components/PasswordForm.jsx'
-
+import CancelButton from '../components/CancelButton.jsx'
+import SubmitButton from '../components/SubmitButton.jsx'
+import ForgottenPasswordButton from '../components/ForgottenPasswordButton.jsx'
 import '../scss/login.scss'
 
 class Login extends Component {
@@ -96,9 +98,9 @@ class Login extends Component {
                     passwordOnly={true}
                     passwordError={this.state.passwordError}
                     />
-        <button type="submit" className="btn btn-success btn-lg" onClick={this.sendLogin.bind(this)}>Log In</button>
-        <Link to="/" className="btn btn-danger btn-lg" onClick={this.cancelLogin.bind(this)}>Cancel</Link>
-        <Link to="/reset" className="btn btn-primary btn-lg">I Forgot My Password</Link>
+        <SubmitButton click={this.sendLogin.bind(this)}>Log In</SubmitButton>
+        <CancelButton cancel={this.cancelLogin.bind(this)} />
+        <ForgottenPasswordButton>I Forgot My Password</ForgottenPasswordButton>
       </section>
     )
   }

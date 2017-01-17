@@ -5,8 +5,6 @@ import '../scss/navbar.scss'
 
 export default props => {
   const { username, loggedIn } = props.user
-  const userLink = loggedIn ? <li><Link to="/me">{username}</Link></li> : <li><Link to="/login">Login</Link></li>
-  const signupLink = loggedIn ? null : <li><Link to="/signup">Sign Up</Link></li>
   return (
     <nav className="navbar navbar-default">
       <div className="navbar-header">
@@ -14,8 +12,8 @@ export default props => {
       </div>
       <ul className="nav navbar-nav navbar-right">
         <li><Link to="/search">Search</Link></li>
-        {userLink}
-        {signupLink}
+        <li>{loggedIn ? <Link to="/me">{username}</Link> : <Link to="/login">Login</Link>}</li>
+        <li>{loggedIn ? null : <Link to="/signup">Sign Up</Link>}</li>
       </ul>
     </nav>
   )

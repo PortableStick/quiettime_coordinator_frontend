@@ -1,5 +1,5 @@
 import React from 'react'
-
+import DefaultButton from './DefaultButton.jsx'
 export default props => {
   return (
     <form >
@@ -11,7 +11,7 @@ export default props => {
         <label htmlFor="user-email">Email: </label>
         <span>{props.user.email}</span>
       </div>
-      <button type="button" className="btn btn-default" onClick={props.editInfo}>Edit</button>
+      <DefaultButton onClick={props.editInfo}>Edit</DefaultButton>
     </form>
   )
 }
