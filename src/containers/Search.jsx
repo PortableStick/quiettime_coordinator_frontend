@@ -2,14 +2,7 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import SearchBar from '../components/SearchBar.jsx'
 import SearchResult from '../components/SearchResult.jsx'
-import { sendAuthenticatedSearchData,
-          sendUnauthenticatedSearchData,
-          enableGeolocation,
-          setCoordinates,
-          persistUserCoordinates,
-          removeLocationFromUser,
-          addLocationToUser
-           } from '../actions/actions'
+import * as Actions from '../actions/actions'
 import store from '../store/store'
 
 class Search extends Component {
@@ -31,7 +24,7 @@ class Search extends Component {
           }
         })
       }
-      store.dispatch(addLocationToUser(updateObj))
+      store.dispatch(Actions.addLocationToUser(updateObj))
     }
 
     removeAttending(id, center) {
@@ -39,12 +32,11 @@ class Search extends Component {
         id: id,
         updateData: JSON.stringify({
           update: {
-            yelp_id: location,
-            center: center
+            yelp_id: location
           }
         })
       }
-      store.dispatch(removeLocationFromUser(updateObj))
+      store.dispatch(Actions.removeLocationFromUser(updateObj))
     }
 
     submitSearch(event) {
@@ -52,9 +44,9 @@ class Search extends Component {
       if(this.state.searchEntry === "" && this.props.ui.isUsingGeolocation) {
         const coordinates = this.props.user.coordinates
        if(this.props.user.loggedIn) {
-          store.dispatch(sendAuthenticatedSearchData(coordinates))
+          store.dispatch(Actions.sendAuthenticatedSearchData(coordinates))
         } else {
-          store.dispatch(sendUnauthenticatedSearchData(coordinates))
+          store.dispatch(Actions.sendUnauthenticatedSearchData(coordinates))
         }
       } else {
         const searchObj = JSON.stringify({
@@ -63,9 +55,9 @@ class Search extends Component {
           }
         })
         if(this.props.user.loggedIn) {
-          store.dispatch(sendAuthenticatedSearchData(searchObj))
+          store.dispatch(Actions.sendAuthenticatedSearchData(searchObj))
         } else {
-          store.dispatch(sendUnauthenticatedSearchData(searchObj))
+          store.dispatch(Actions.sendUnauthenticatedSearchData(searchObj))
         }
       }
     }
@@ -87,13 +79,13 @@ class Search extends Component {
             longitude: data.coords.longitude
           }
         })
-        store.dispatch(setCoordinates(coordinates))
-        store.dispatch(persistUserCoordinates(coordinates))
-        store.dispatch(enableGeolocation())
+        store.dispatch(Actions.setCoordinates(coordinates))
+        store.dispatch(Actions.persistUserCoordinates(coordinates))
+        store.dispatch(Actions.enableGeolocation())
         if(this.props.user.loggedIn) {
-          store.dispatch(sendAuthenticatedSearchData(coordinates))
+          store.dispatch(Actions.sendAuthenticatedSearchData(coordinates))
         } else {
-          store.dispatch(sendUnauthenticatedSearchData(coordinates))
+          store.dispatch(Actions.sendUnauthenticatedSearchData(coordinates))
         }
       })
     }

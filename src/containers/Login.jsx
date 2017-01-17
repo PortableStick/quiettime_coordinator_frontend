@@ -91,12 +91,14 @@ class Login extends Component {
                     updateUsername={this.updateUsername.bind(this)}
                     usernameOnly={true}
                     usernameError={this.state.usernameError}
+                    usernameFloatingLabelText="Username or Email"
                     />
         <PasswordForm label="password-reset"
-                    passwordUpdate={this.updatePassword.bind(this)}
+                    updatePassword={this.updatePassword.bind(this)}
                     passwordValue={this.state.passwordValue}
                     passwordOnly={true}
                     passwordError={this.state.passwordError}
+                    floatingLabelFixed={false}
                     />
         <PrimaryButton onClick={this.sendLogin.bind(this)}>Log In</PrimaryButton>
         <CancelButton cancel={this.cancelLogin.bind(this)} />

@@ -7,7 +7,6 @@ import IconButton from 'material-ui/IconButton'
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
 import SearchIcon from 'material-ui/svg-icons/action/search'
 import Divider from 'material-ui/Divider'
-import FlatButton from 'material-ui/FlatButton'
 import '../scss/navbar.scss'
 
 export default props => {
@@ -23,6 +22,6 @@ export default props => {
   const search = <IconButton containerElement={<Link to="/search" />} label={'Search'} ><SearchIcon/></IconButton>
 
   return (
-    <AppBar title="The Quietlife Coordinator" iconElementLeft={nav} iconElementRight={search}/>
+    <AppBar title={<Link to="/">The Quietlife Coordinator</Link>} iconElementLeft={nav} iconElementRight={search}/>
   )
 }

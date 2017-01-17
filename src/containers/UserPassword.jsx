@@ -78,12 +78,13 @@ class UserPassword extends Component {
     return (<div>
       <form className="form-inline">
         <PasswordForm label="password-reset"
-                      passwordUpdate={this.updateUserPassword.bind(this)}
-                      passwordConfirmationUpdate={this.updateUserPasswordConfirmation.bind(this)}
+                      updatePassword={this.updateUserPassword.bind(this)}
+                      updatePasswordConfirmation={this.updateUserPasswordConfirmation.bind(this)}
                       passwordError={this.state.passwordError}
                       validatePasswords={this.validatePasswords.bind(this)}
                       passwordValue={this.state.passwordValue}
                       passwordConfirmationValue={this.state.passwordConfirmationValue}
+                      floatingLabelFixed={true}
         />
           <PrimaryButton onClick={this.sendPasswords.bind(this)} >Save</PrimaryButton>
           <CancelButton destination="/me" cancel={this.cancelEdit.bind(this)} >Cancel</CancelButton>

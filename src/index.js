@@ -6,7 +6,7 @@ import store from './store/store'
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import injectTapEventPlugin from 'react-tap-event-plugin'
-import '../node_modules/bootstrap/less/bootstrap.less'
+
 import './scss/main.scss'
 
 window.onload = () => {

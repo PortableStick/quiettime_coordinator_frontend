@@ -1,24 +1,26 @@
 import React from 'react'
+import TextField from 'material-ui/TextField'
 
 export default props =>
 <div>
-  <div className="form-group">
-    <label htmlFor={`${props.label}-password`}>Password</label>
-    <input type="password"
-          className={`form-control ${props.passwordError ? 'error' : ''}`}
-          id={`${props.label}-password`}
-          onChange={props.passwordUpdate}
-          onBlur={props.validatePasswords}
-          value={props.passwordValue} />
-    <div className="error-message">{props.passwordError}</div>
-  </div>
-  <div className={`form-group ${props.passwordOnly === true  ? ' hidden' : ''}`}>
-      <label htmlFor={`${props.label}-confirmation`}>Password Confirmation</label>
-      <input type="password"
-            className={`form-control ${props.passwordError ? 'error' : ''}`}
-            id={`${props.label}-confirmation`}
-            onChange={props.passwordConfirmationUpdate}
+  <TextField hintText={props.passwordLabel || "Password"}
+            floatingLabelText={props.passwordFloatingLabelText || "Password"}
+            value={props.passwordValue}
+            onChange={props.updatePassword}
             onBlur={props.validatePasswords}
-            value={props.passwordConfirmationValue} />
-  </div>
+            errorText={props.passwordError}
+            floatingLabelFixed={props.floatingLabelFixed}
+            type="password"
+            />
+    <div className={`${props.passwordOnly === true  ? ' hidden' : ''}`}>
+      <TextField hintText={props.passwordConfirmationLabel || "Confirm Password"}
+              floatingLabelText={props.passwordConfirmationFloatingLabelText || "Password Confirmation"}
+              value={props.passwordConfirmationValue}
+              onChange={props.updatePasswordConfirmation}
+              onBlur={props.validatePasswords}
+              errorText={props.passwordError}
+              floatingLabelFixed={props.floatingLabelFixed}
+              type="password"
+              />
+    </div>
 </div>

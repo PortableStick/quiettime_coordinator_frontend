@@ -1,17 +1,12 @@
 import React from 'react'
 import DefaultButton from './DefaultButton.jsx'
-export default props => {
-  return (
-    <form >
-      <div className="form-group">
-        <label htmlFor="user-name">Username: </label>
-        <span>{props.user.username}</span>
-      </div>
-      <div className="form-group">
-        <label htmlFor="user-email">Email: </label>
-        <span>{props.user.email}</span>
-      </div>
-      <DefaultButton onClick={props.editInfo}>Edit</DefaultButton>
-    </form>
-  )
-}
+import TextField from 'material-ui/TextField'
+
+export default props =>
+<div>
+  <TextField disabled={true} floatingLabelText="Username" value={props.user.username} />
+  <br />
+  <TextField disabled={true} floatingLabelText="Email" value={props.user.email} />
+  <br />
+  <DefaultButton onClick={props.editInfo}>Edit Info</DefaultButton>
+</div>
