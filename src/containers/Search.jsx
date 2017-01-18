@@ -4,6 +4,7 @@ import SearchBar from '../components/SearchBar.jsx'
 import SearchResult from '../components/SearchResult.jsx'
 import * as Actions from '../actions/actions'
 import store from '../store/store'
+import RefreshIndicator from 'material-ui/RefreshIndicator'
 
 import '../scss/search.scss'
 
@@ -97,9 +98,7 @@ class Search extends Component {
 
     render() {
       const { searches, ui, user } = this.props
-      const results = <div>Search results here</div>
-                      &&
-                      searches.results.map(result =>
+      const results = searches.results.map(result =>
                         <SearchResult key={result.id}
                                       result={result}
                                       center={searches.center}
@@ -115,6 +114,13 @@ class Search extends Component {
                   submitSearch={this.submitSearch.bind(this)}
                   updateSearchEntry={this.updateSearchEntry.bind(this)}
                   />
+        {this.props.ui.searchDataSent ? <RefreshIndicator
+      size={50}
+      left={70}
+      top={0}
+      loadingColor="#FF9800"
+      status="loading"
+    /> : null}
         <ul>
           {results}
         </ul>

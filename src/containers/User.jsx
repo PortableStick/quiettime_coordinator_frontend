@@ -73,7 +73,7 @@ class User extends Component {
 
     render() {
       return(
-        <section className="container">
+        <section id="profile">
           <h1>Profile</h1>
           <Divider />
           <UserInfoEditSwitch editMode={this.props.ui.editMode} editInfo={this.editInfo.bind(this)} user={this.props.user}/>
